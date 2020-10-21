@@ -57,7 +57,7 @@ public class RouteAddWindow {
 
     private static final RoutesController controller = new RoutesController();
     private String getPromptText(String route, String verb) {
-        return  "import spark.Spark as http\n\nhttp." +verb+"(\""+route+"\", (req,res) -> {\n" +
+        return  verb+"(\""+route+"\", (req,res) -> {\n" +
                 "\t// Read the documentation at https://sparkjava.com/ \n" +
                 "\t// You can get a RouteLibrary like so: def myLibrary = getLibrary(\"MyLibraryName\");\n" +
                 "\tres.body(\"Hello, World!\");\n" +
