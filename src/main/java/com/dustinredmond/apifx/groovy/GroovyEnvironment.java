@@ -28,22 +28,23 @@ public class GroovyEnvironment {
     private static GroovyEnvironment instance;
     private GroovyEnvironment() { super(); }
     private static final GroovyShell shell = new GroovyShell();
-    /**
-     * Code that provides a getLibrary function, to be used in Route definitions to get RouteLibraries
-     * as executable Groovy/Java objects
-     */
-    @SuppressWarnings("GrUnnecessarySemicolon") // seriously, one of those semicolons is needed
-    private static final String GET_LIBRARY_CODE =
-            "\ndef static getLibrary(String className) {\n" +
-            "    RouteLibrary clazz = new RouteLibraryDAO().findByClassName(className)\n" +
-            "    if (clazz != null && clazz.isEnabled()) {\n" +
-            "        try {\n" +
-            "            return new GroovyClassLoader().parseClass(clazz.getCode()).getDeclaredConstructor().newInstance()\n" +
-            "        } catch (Exception ignored) { return null; }\n" +
-            "    }\n" +
-            "}\n";
 
-    private static final String IMPORTS = "import com.dustinredmond.apifx.persistence.RouteLibraryDAO\n" +
+    @SuppressWarnings("UnnecessaryQualifiedReference")
+    // for some reason, the reference to Spark.get must be fully-qualified
+    // we have to define this method to overload the Groovy .get() method
+    private static final String GET_LIBRARY_CODE =
+            "def static get(url, reqRes) {\n" +
+                    "    spark.Spark.get(url, reqRes)" +
+                    "}\n" +
+                    "def static getLibrary(String className) {\n" +
+                    "    RouteLibrary clazz = new RouteLibraryDAO().findByClassName(className)\n" +
+                    "    if (clazz != null && clazz.isEnabled()) {\n" +
+                    "        try {\n" +
+                    "            return new GroovyClassLoader().parseClass(clazz.getCode()).getDeclaredConstructor().newInstance()\n" +
+                    "        } catch (Exception ignored) { return null }\n" +
+                    "    }\n" +
+                    "}\n";
+    private static final String IMPORTS = "\nimport com.dustinredmond.apifx.persistence.RouteLibraryDAO\n" +
             "import com.dustinredmond.apifx.model.RouteLibrary\n" +
             "import spark.Spark.*\n\n";
 }
