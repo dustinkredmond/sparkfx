@@ -32,12 +32,34 @@ See below, we've already created a few sample routes.
 We have 3 different Routes. Let's take a look at */api/user/list*.
 
 A window will pop up with an editor where we can define the Route logic. We can use Java or Apache Groovy code
-to define the Route logic.
+to define the Route logic. 
 
 ![Route Edit](./img/routeAdd.png)
 
-This Route is very simple, but makes use of something you haven't seen yet, RouteLibraries. RouteLibraries are a way
+This Route is very simple, but mentions something you haven't seen yet, RouteLibraries. RouteLibraries are a way
 for us to keep the code in our Route definitions from being overly verbose. Think of it as a separate Class file.
+
+We can get a previously defined RouteLibrary by the following:
+
+```groovy
+    // Groovy Style
+    def MyLibraryClass = getLibrary("MyLibraryClass")
+    // or Java Style
+    //Object MyLibraryClass = getLibrary("MyLibraryClass");
+
+    // We can then call static or instance methods (since it is actually created with newInstance() in the background)
+    MyLibraryClass.someInstanceMethod();
+    MyLibraryClass.someStaticMethod();
+
+    // It's best do do something like below where the name is lowercase if you're going
+    // to primarily reference the instance instead of the static methods.
+    def emp = getLibrary("Employee")
+    emp.setSalary(new BigDecimal("45,000"))
+    
+    // While this is fine if you're going to use all static methods.
+    def Printer = getLibrary("Printer")
+    Printer.printAllTheThings();
+```
 
 As soon as we save our changes to this route, we can visit http://localhost:8080/api/user/list and see the changes
 we made instantly. No server reboot required!
