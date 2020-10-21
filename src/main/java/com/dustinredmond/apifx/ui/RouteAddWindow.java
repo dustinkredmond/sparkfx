@@ -35,19 +35,12 @@ public class RouteAddWindow {
 
 
         GroovySyntaxEditor taCode = new GroovySyntaxEditor();
-        taCode.setText(getPromptText(tfRoute.getText(),"get"));
+        taCode.setText(getPromptText(tfRoute.getPromptText(),"get"));
         grid.add(taCode, 0, rowIndex++, 2, 1);
         GridPane.setVgrow(taCode, Priority.ALWAYS);
         GridPane.setHgrow(taCode, Priority.ALWAYS);
 
-        cbEndpoint.getSelectionModel().selectedItemProperty().addListener(e -> {
-            taCode.setText(getPromptText(tfRoute.getText(),
-                    cbEndpoint.getSelectionModel().getSelectedItem().name().toLowerCase()));
-        });
 
-        tfRoute.textProperty().addListener(e -> {
-            taCode.setText(getPromptText(tfRoute.getText(), cbEndpoint.getSelectionModel().getSelectedItem().name().toLowerCase()));
-        });
         Button buttonAdd = new Button("Add Route");
         buttonAdd.setMinWidth(120);
         buttonAdd.setOnAction(e -> {
