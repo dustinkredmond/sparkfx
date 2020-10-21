@@ -33,12 +33,21 @@ public class RouteAddWindow {
         grid.add(new Label("HTTP Verb:"), 0, rowIndex);
         grid.add(cbEndpoint, 1, rowIndex++);
 
+
         GroovySyntaxEditor taCode = new GroovySyntaxEditor();
-        taCode.setText(PROMPT_TEXT);
+        taCode.setText(getPromptText(tfRoute.getText(),"get"));
         grid.add(taCode, 0, rowIndex++, 2, 1);
         GridPane.setVgrow(taCode, Priority.ALWAYS);
         GridPane.setHgrow(taCode, Priority.ALWAYS);
 
+        cbEndpoint.getSelectionModel().selectedItemProperty().addListener(e -> {
+            taCode.setText(getPromptText(tfRoute.getText(),
+                    cbEndpoint.getSelectionModel().getSelectedItem().name().toLowerCase()));
+        });
+
+        tfRoute.textProperty().addListener(e -> {
+            taCode.setText(getPromptText(tfRoute.getText(), cbEndpoint.getSelectionModel().getSelectedItem().name().toLowerCase()));
+        });
         Button buttonAdd = new Button("Add Route");
         buttonAdd.setMinWidth(120);
         buttonAdd.setOnAction(e -> {
@@ -54,15 +63,12 @@ public class RouteAddWindow {
     }
 
     private static final RoutesController controller = new RoutesController();
-    private static final String PROMPT_TEXT =
-        "// Spark's Request and Response will be passed into below as 'req' and 'res'\n" +
-        "// Read the documentation at https://sparkjava.com/ to understand the Request and Response API\n\n" +
-        "// The following example creates an endpoint that renders the text 'Hello, World!'\n\n" +
-            "// You can get a library (Menu -> Routes -> Route Libraries)\n" +
-            "// by the following line\n" +
-            "// def MyClassName = getLibrary(\"MyClassName\")\n" +
-            "// MyClassName.someStaticMethod();\n" +
-            "// MyClassName.someInstanceMethod();\n\n" +
-            "res.body(\"Hello, World!\");\n" +
-            "return res.body();";
+    private String getPromptText(String route, String verb) {
+        return  "import spark.Spark as http\n\nhttp." +verb+"(\""+route+"\", (req,res) -> {\n" +
+                "\t// Read the documentation at https://sparkjava.com/ \n" +
+                "\t// You can get a RouteLibrary like so: def myLibrary = getLibrary(\"MyLibraryName\");\n" +
+                "\tres.body(\"Hello, World!\");\n" +
+                "\treturn res.body();\n" +
+                "});";
+    }
 }

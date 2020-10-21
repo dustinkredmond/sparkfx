@@ -10,7 +10,6 @@ import com.dustinredmond.apifx.ui.custom.CustomExceptionHandler;
 public class Main {
 
     public static void main(String[] args) {
-        AppRouteInitializer.setHeadless(false);
         // Make sure to set for each Thread in our application
         Thread.currentThread().setUncaughtExceptionHandler(new CustomExceptionHandler());
         Thread t = new Thread(new DatabaseBootstrap());

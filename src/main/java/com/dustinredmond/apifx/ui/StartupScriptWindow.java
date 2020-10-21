@@ -80,7 +80,6 @@ public class StartupScriptWindow {
         table.setContextMenu(cm);
 
         table.setOnContextMenuRequested(e -> {
-            if (table.getSelectionModel().isEmpty()) {
                 if (!table.getSelectionModel().isEmpty()) {
                     miEdit.setDisable(false);
                     miDelete.setDisable(false);
@@ -90,7 +89,6 @@ public class StartupScriptWindow {
                     miDelete.setDisable(true);
                     miEnableDisable.setDisable(true);
                 }
-            }
         });
 
         table.setOnMouseClicked(m -> {

@@ -19,10 +19,6 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class AppRouteInitializer implements Runnable {
 
-    private static boolean headless;
-    public static void setHeadless(boolean enabled) { AppRouteInitializer.headless = enabled; }
-    public static boolean isHeadless() { return AppRouteInitializer.headless; }
-
     @Override
     public void run() {
 
@@ -35,13 +31,9 @@ public class AppRouteInitializer implements Runnable {
                     startupSuccess.incrementAndGet();
                 } catch (Exception e) {
                     startupFailure.incrementAndGet();
-                    if (isHeadless()) {
-                        e.printStackTrace();
-                    } else {
                         Platform.runLater(() -> CustomAlert.showExceptionDialog(e,
                                 "Exception occurred when executing Startup Script.\n" +
                                         "Description: " + script.getDescription()));
-                    }
                 }
             }
         });
@@ -49,35 +41,21 @@ public class AppRouteInitializer implements Runnable {
         AtomicInteger routesSuccess = new AtomicInteger(0);
         AtomicInteger routesFailure = new AtomicInteger(0);
 
-        new RouteDAO().findAll().forEach(endpoint -> {
-            if (!endpoint.isEnabled()) {
+        new RouteDAO().findAll().forEach(route -> {
+            if (!route.isEnabled()) {
                 return;
             }
-            String verb = endpoint.getVerb().name().toLowerCase();
-            String routeCode  =
-                "import static spark.Spark.*;" +
-                "\n" +
-                verb +"(\""+endpoint.getUrl()+"\", (req, res) -> {\n" +
-                    "\t"+endpoint.getCode()+"\n" +
-                "})\n\n";
             try {
-                GroovyEnvironment.getInstance().evaluate(routeCode);
+                GroovyEnvironment.getInstance().evaluate(route.getCode());
                 routesSuccess.incrementAndGet();
-                logger.info("Enabled Route: {}", endpoint.getUrl());
+                logger.info("Enabled Route: {}", route.getUrl());
             } catch (Exception e) {
                 routesFailure.incrementAndGet();
-                if (isHeadless()) {
-                    e.printStackTrace();
-                } else {
                     Platform.runLater(() -> CustomAlert.showExceptionDialog(e,
-                            "Exception occurred when creating route: "+ endpoint.getUrl()));
-                }
+                            "Exception occurred when creating route: "+ route.getUrl()));
             }
         });
 
-        if (isHeadless()) {
-            return;
-        }
         Platform.runLater(() ->
             CustomAlert.showInfo("Server Startup complete",
                     String.format(" - Startup Scripts executed successfully:  %s\n" +

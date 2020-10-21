@@ -50,14 +50,7 @@ public class StartupScriptAddWindow {
     }
 
     private static final StartupScriptController controller = new StartupScriptController();
-    private static final String PROMPT = "import static spark.Spark.*\n\n" +
+    private static final String PROMPT = "import spark.Spark as http\n\n" +
             "// Example script: GZIP everything\n" +
-            "after((req,res) -> res.header(\"Content-Encoding\", \"gzip\"));\n\n" +
-            "// Example script: Enable SSL\n" +
-            "def keyStoreLocation = \"path/to/keystore.jks\"\n" +
-            "def keyStorePassword = \"someSecurePassw0rd\"\n" +
-            "secure(keyStoreLocation, keyStorePassword, null, null);\n\n" +
-            "// See Spark API documentation for more options,\n" +
-            "// You can also add non-Spark code here, e.g. a ShutdownHook";
-
+            "http.after((req,res) -> res.header(\"Content-Encoding\", \"gzip\"));";
 }

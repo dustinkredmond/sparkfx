@@ -22,7 +22,7 @@ public class GroovyEnvironment {
      * @param code Code to evaluate
      */
     public void evaluate(String code) {
-        shell.evaluate(GET_LIBRARY_CODE + code);
+        shell.evaluate(IMPORTS + code + GET_LIBRARY_CODE);
     }
 
     private static GroovyEnvironment instance;
@@ -32,15 +32,18 @@ public class GroovyEnvironment {
      * Code that provides a getLibrary function, to be used in Route definitions to get RouteLibraries
      * as executable Groovy/Java objects
      */
-    private static final String GET_LIBRARY_CODE = "import com.dustinredmond.apifx.persistence.RouteLibraryDAO\n" +
-            "import com.dustinredmond.apifx.model.RouteLibrary\n" +
-            "\n" +
-            "def static getLibrary(String className) {\n" +
+    @SuppressWarnings("GrUnnecessarySemicolon") // seriously, one of those semicolons is needed
+    private static final String GET_LIBRARY_CODE =
+            "\ndef static getLibrary(String className) {\n" +
             "    RouteLibrary clazz = new RouteLibraryDAO().findByClassName(className)\n" +
             "    if (clazz != null && clazz.isEnabled()) {\n" +
             "        try {\n" +
             "            return new GroovyClassLoader().parseClass(clazz.getCode()).getDeclaredConstructor().newInstance()\n" +
-            "        } catch (Exception ignored) { return null }\n" +
+            "        } catch (Exception ignored) { return null; }\n" +
             "    }\n" +
             "}\n";
+
+    private static final String IMPORTS = "import com.dustinredmond.apifx.persistence.RouteLibraryDAO\n" +
+            "import com.dustinredmond.apifx.model.RouteLibrary\n" +
+            "import spark.Spark.*\n\n";
 }

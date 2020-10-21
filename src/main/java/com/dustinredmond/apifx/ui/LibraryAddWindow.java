@@ -25,6 +25,7 @@ public class LibraryAddWindow {
         grid.add(tfClassName, 1, 0);
 
         GroovySyntaxEditor se = new GroovySyntaxEditor();
+        se.setText(getPromptText());
         grid.add(se, 0, 1, 2, 1);
         GridPane.setVgrow(se, Priority.ALWAYS);
         GridPane.setHgrow(se, Priority.ALWAYS);
@@ -41,6 +42,14 @@ public class LibraryAddWindow {
         stage.setScene(new Scene(grid));
         stage.setMaximized(true);
         stage.show();
+    }
+
+    private String getPromptText() {
+        return "class SomeLibrary {\n" +
+                "    def someUtilityMethod() {\n" +
+                "        println \"Some work was done...\";\n" +
+                "    }\n" +
+                "}";
     }
 
     private static final RouteLibraryController controller = new RouteLibraryController();

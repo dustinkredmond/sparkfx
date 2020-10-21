@@ -37,13 +37,9 @@ public class RoutesController {
             CustomAlert.showWarning("All fields are required.");
             return false;
         }
-        // System.out.println(getRouteTemplate(tfRoute.getText(), cbEndpoint.getSelectionModel().getSelectedItem(), taCode.getText()));
         if (ServerContext.isActive()) {
             GroovyEnvironment.getInstance().evaluate(
-                    getRouteTemplate(
-                            tfRoute.getText(),
-                            cbEndpoint.getSelectionModel().getSelectedItem(),
-                            taCode.getText()));
+                    taCode.getText());
         }
         Route route = new Route();
         route.setCode(taCode.getText());
@@ -54,12 +50,6 @@ public class RoutesController {
         new RouteDAO().create(route);
         logger.info("Created Route: {}", route.getUrl());
         return true;
-    }
-
-    public static String getRouteTemplate(String endpoint, Verb cbVerb, String code) {
-        return "spark.Spark."+cbVerb.name().toLowerCase()+"(\""+endpoint+"\", (req, res) -> {\n" +
-                "\t"+code+"\n" +
-                "});";
     }
 
     public void removeRoute(Route route) {
@@ -92,10 +82,7 @@ public class RoutesController {
             } else {
                 if (ServerContext.isActive()) {
                     GroovyEnvironment.getInstance().evaluate(
-                            getRouteTemplate(
-                                    e.getUrl(),
-                                    e.getVerb(),
-                                    e.getCode()));
+                            e.getCode());
                 }
             }
             e.setEnabled(!e.isEnabled());
