@@ -29,7 +29,7 @@ See below, we've already created a few sample routes.
 
 ![Route Overview](./img/routeOverview.png)
 
-We have 3 different Routes. Let's take a look at */api/user/list*.
+### Route Editor
 
 A window will pop up with an editor where we can define the Route logic. We can use Java or Apache Groovy code
 to define the Route logic. 
@@ -61,7 +61,7 @@ We can get a previously defined RouteLibrary by the following:
     Printer.printAllTheThings();
 ```
 
-As soon as we save our changes to this route, we can visit http://localhost:8080/api/user/list and see the changes
+As soon as we save our changes to this route, we can visit http://localhost:8080/api/someRoute and see the changes
 we made instantly. No server reboot required!
 
 ---
