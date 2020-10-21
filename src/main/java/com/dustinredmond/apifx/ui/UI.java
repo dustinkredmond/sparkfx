@@ -77,6 +77,7 @@ public class UI extends Application {
 
     private void addTrayIcon(Stage stage) {
         CustomTrayIcon icon = new CustomTrayIcon(stage, getClass().getResource("icons8-api-48.png"));
+        icon.setTrayIconTooltip(UI.APP_TITLE);
         icon.setApplicationTitle(UI.APP_TITLE);
         icon.show();
     }
