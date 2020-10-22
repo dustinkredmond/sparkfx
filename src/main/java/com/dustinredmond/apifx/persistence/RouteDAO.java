@@ -3,6 +3,7 @@ package com.dustinredmond.apifx.persistence;
 import com.dustinredmond.apifx.model.Route;
 import com.dustinredmond.apifx.model.Verb;
 import com.dustinredmond.apifx.ui.custom.CustomAlert;
+import javafx.application.Platform;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -31,7 +32,7 @@ public class RouteDAO implements DAO<Route> {
                         rs.getBoolean("ENABLED")));
             }
         } catch (SQLException e) {
-            CustomAlert.showExceptionDialog(e);
+            Platform.runLater(() -> CustomAlert.showExceptionDialog(e));
         }
         return routes;
     }

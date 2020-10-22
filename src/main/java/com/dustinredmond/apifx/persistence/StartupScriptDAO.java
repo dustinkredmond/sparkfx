@@ -2,6 +2,7 @@ package com.dustinredmond.apifx.persistence;
 
 import com.dustinredmond.apifx.model.StartupScript;
 import com.dustinredmond.apifx.ui.custom.CustomAlert;
+import javafx.application.Platform;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -72,7 +73,7 @@ public class StartupScriptDAO implements DAO<StartupScript> {
                         rs.getBoolean("ENABLED")));
             }
         } catch (SQLException e) {
-            CustomAlert.showExceptionDialog(e);
+            Platform.runLater(() -> CustomAlert.showExceptionDialog(e));
         }
         return scripts;
     }
