@@ -21,26 +21,27 @@ public class LibraryEditWindow {
             return;
         }
 
-        RouteLibrary clazz = table.getSelectionModel().getSelectedItem();
+        RouteLibrary lib = table.getSelectionModel().getSelectedItem();
         CustomStage stage = new CustomStage();
         CustomGrid grid = new CustomGrid();
         stage.setTitle(UI.APP_TITLE + " - Edit Library");
 
         grid.add(new Label("Class Name:"), 0, 0);
-        TextField tfClassName = new TextField(clazz.getClassName());
+        TextField tfClassName = new TextField(lib.getClassName());
         grid.add(tfClassName, 1, 0);
 
         GroovySyntaxEditor se = new GroovySyntaxEditor();
-        se.setText(clazz.getCode());
+        se.setText(lib.getCode());
         grid.add(se, 0, 1, 2, 1);
         GridPane.setVgrow(se, Priority.ALWAYS);
         GridPane.setHgrow(se, Priority.ALWAYS);
+        se.setPrefWidth(Double.MAX_VALUE);
 
         Button buttonAdd = new Button("Save Changes");
         buttonAdd.setMinWidth(120);
         grid.add(buttonAdd, 0, 2);
         buttonAdd.setOnAction(e -> {
-            if (controller.editLibrary(clazz, tfClassName.getText(), se.getText())) {
+            if (controller.editLibrary(lib, tfClassName.getText(), se.getText())) {
                 stage.hide();
             }
         });

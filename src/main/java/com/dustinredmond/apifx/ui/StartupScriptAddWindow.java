@@ -32,9 +32,10 @@ public class StartupScriptAddWindow {
         GroovySyntaxEditor gse = new GroovySyntaxEditor();
         gse.setText(PROMPT);
         grid.add(new Label("Code:"), 0, 2);
-        grid.add(gse, 1, 2);
+        grid.add(gse, 1, 2, 2, 1);
         GridPane.setVgrow(gse, Priority.ALWAYS);
         GridPane.setHgrow(gse, Priority.ALWAYS);
+        gse.setPrefWidth(Double.MAX_VALUE);
 
         Button buttonAdd = new Button("Add Script");
         buttonAdd.setOnAction(e -> {

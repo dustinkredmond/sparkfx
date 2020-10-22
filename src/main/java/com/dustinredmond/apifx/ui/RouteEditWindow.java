@@ -48,6 +48,7 @@ public class RouteEditWindow {
         grid.add(taCode, 0, rowIndex++, 2, 1);
         GridPane.setVgrow(taCode, Priority.ALWAYS);
         GridPane.setHgrow(taCode, Priority.ALWAYS);
+        taCode.setPrefWidth(Double.MAX_VALUE);
 
         Button buttonAdd = new Button("Save Changes");
         buttonAdd.setMinWidth(120);

@@ -29,6 +29,7 @@ public class LibraryAddWindow {
         grid.add(se, 0, 1, 2, 1);
         GridPane.setVgrow(se, Priority.ALWAYS);
         GridPane.setHgrow(se, Priority.ALWAYS);
+        se.setPrefWidth(Double.MAX_VALUE);
 
         Button buttonAdd = new Button("Add Library");
         buttonAdd.setMinWidth(120);
