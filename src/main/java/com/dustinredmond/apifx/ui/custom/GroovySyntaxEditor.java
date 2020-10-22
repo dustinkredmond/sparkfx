@@ -139,9 +139,8 @@ public class GroovySyntaxEditor extends CodeArea {
     private static StyleSpans<Collection<String>> computeHighlighting(String text) {
         Matcher matcher = PATTERN.matcher(text);
         int lastKwEnd = 0;
-        StyleSpansBuilder<Collection<String>> spansBuilder
-                = new StyleSpansBuilder<>();
-        while(matcher.find()) {
+        StyleSpansBuilder<Collection<String>> spansBuilder = new StyleSpansBuilder<>();
+        while (matcher.find()) {
             String styleClass =
                     matcher.group("KEYWORD") != null ? "keyword" :
                     matcher.group("PAREN") != null ? "paren" :
@@ -151,6 +150,7 @@ public class GroovySyntaxEditor extends CodeArea {
                     matcher.group("STRING") != null ? "string" :
                     matcher.group("SINGLESTRING") != null ? "string" :
                     matcher.group("COMMENT") != null ? "comment" :
+                    matcher.group("TRIPLEQUOTE") != null ? "comment" :
                     matcher.group("LITERAL") != null ? "literal" :
                     null; assert styleClass != null;
             spansBuilder.add(Collections.emptyList(), matcher.start() - lastKwEnd);
@@ -168,6 +168,7 @@ public class GroovySyntaxEditor extends CodeArea {
      * Call before disposing of the SyntaxEditor
      */
     public void dispose() {
+        log.debug("Disposed of {} - {}", this.getClass().getName(), this.toString());
         highlightingSubscription.unsubscribe();
     }
 
@@ -188,7 +189,7 @@ public class GroovySyntaxEditor extends CodeArea {
     @Override
     protected void finalize() throws Throwable {
         try {
-            this.highlightingSubscription.unsubscribe();
+            this.dispose();
         } finally {
             super.finalize();
         }
