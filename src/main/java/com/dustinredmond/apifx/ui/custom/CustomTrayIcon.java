@@ -96,6 +96,7 @@ public class CustomTrayIcon {
                     miExit.addActionListener(e -> {
                         this.tray.remove(this.trayIcon);
                         Platform.exit();
+                        System.exit(0);
                     });
                     this.popupMenu.add(miExit);
                 }
