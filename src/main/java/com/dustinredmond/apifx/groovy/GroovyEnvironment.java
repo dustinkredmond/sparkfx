@@ -22,7 +22,7 @@ public class GroovyEnvironment {
      * @param code Code to evaluate
      */
     public void evaluate(String code) {
-        shell.evaluate(IMPORTS + code + GET_LIBRARY_CODE);
+        shell.evaluate(IMPORTS + "\n" + code + "\n" + GET_LIBRARY_CODE);
     }
 
     private static GroovyEnvironment instance;
