@@ -1,0 +1,32 @@
+.keyword {
+    -fx-fill: #000080;
+    -fx-stroke: #000080;
+    -fx-stroke-width: 0.5;
+}
+.paren {
+    -fx-fill: black;
+}
+.brace {
+    -fx-fill: #000080;
+    -fx-stroke: #000080;
+    -fx-stroke-width: 0.5;
+}
+.bracket {
+    -fx-fill: #000080;
+}
+.semicolon {
+    -fx-fill: black;
+}
+.string {
+    -fx-fill: darkgreen;
+}
+.comment {
+    -fx-fill: darkgray;
+    /*-fx-stroke: darkgreen;*/
+    /*-fx-stroke-width: 0.5;*/
+}
+.literal {
+    -fx-fill: #000080;
+    -fx-stroke: #000080;
+    -fx-stroke-width: 0.5;
+}
