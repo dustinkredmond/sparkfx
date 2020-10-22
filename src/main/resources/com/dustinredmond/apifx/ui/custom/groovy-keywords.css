@@ -1,7 +1,7 @@
 .keyword {
     -fx-fill: #000080;
     -fx-stroke: #000080;
-    -fx-stroke-width: 0.5;
+    -fx-stroke-width: 0.25;
 }
 .paren {
     -fx-fill: black;
@@ -9,7 +9,7 @@
 .brace {
     -fx-fill: #000080;
     -fx-stroke: #000080;
-    -fx-stroke-width: 0.5;
+    -fx-stroke-width: 0.25;
 }
 .bracket {
     -fx-fill: #000080;
@@ -22,11 +22,11 @@
 }
 .comment {
     -fx-fill: darkgray;
-    /*-fx-stroke: darkgreen;*/
-    /*-fx-stroke-width: 0.5;*/
+    -fx-stroke: darkgray;
+    -fx-stroke-width: 0.25;
 }
 .literal {
     -fx-fill: #000080;
     -fx-stroke: #000080;
-    -fx-stroke-width: 0.5;
+    -fx-stroke-width: 0.25;
 }
