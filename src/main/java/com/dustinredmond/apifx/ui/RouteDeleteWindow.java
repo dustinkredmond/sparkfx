@@ -1,5 +1,6 @@
 package com.dustinredmond.apifx.ui;
 
+import com.dustinredmond.apifx.ServerContext;
 import com.dustinredmond.apifx.model.Route;
 import com.dustinredmond.apifx.ui.custom.CustomAlert;
 import javafx.scene.control.TableView;
@@ -10,6 +11,10 @@ import javafx.scene.control.TableView;
 public class RouteDeleteWindow {
 
     public void show(TableView<Route> table) {
+        if (!ServerContext.isActive()) {
+            CustomAlert.showInfo("The server is not running, please start it before adding/modifying routes");
+            return;
+        }
         if (table.getSelectionModel().isEmpty()) {
             CustomAlert.showWarning("Please select an API route first.");
             return;

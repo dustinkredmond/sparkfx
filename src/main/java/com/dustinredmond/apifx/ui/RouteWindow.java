@@ -4,6 +4,7 @@ import com.dustinredmond.apifx.ServerContext;
 import com.dustinredmond.apifx.model.Route;
 import com.dustinredmond.apifx.model.Verb;
 import com.dustinredmond.apifx.persistence.RouteDAO;
+import com.dustinredmond.apifx.ui.custom.CustomAlert;
 import com.dustinredmond.apifx.ui.custom.CustomGrid;
 import com.dustinredmond.apifx.ui.custom.CustomMenuBar;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -95,6 +96,8 @@ public class RouteWindow {
 
         table.setOnContextMenuRequested(e -> {
             if (!ServerContext.isActive()) {
+                CustomAlert.showInfo("The server is not running, please start it before making " +
+                        "changes to a route.");
                 cm.hide();
             }
             if (table.getSelectionModel().isEmpty()) {

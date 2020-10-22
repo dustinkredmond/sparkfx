@@ -1,6 +1,8 @@
 package com.dustinredmond.apifx.ui;
 
+import com.dustinredmond.apifx.ServerContext;
 import com.dustinredmond.apifx.model.Verb;
+import com.dustinredmond.apifx.ui.custom.CustomAlert;
 import com.dustinredmond.apifx.ui.custom.CustomGrid;
 import com.dustinredmond.apifx.ui.custom.CustomStage;
 import com.dustinredmond.apifx.ui.custom.GroovySyntaxEditor;
@@ -15,6 +17,10 @@ import javafx.scene.layout.Priority;
 public class RouteAddWindow {
 
     public void show() {
+        if (!ServerContext.isActive()) {
+            CustomAlert.showInfo("The server is not running, please start it before adding/modifying routes");
+            return;
+        }
         CustomStage stage = new CustomStage();
         stage.setTitle("Add Route");
         CustomGrid grid = new CustomGrid();
