@@ -3,6 +3,7 @@ package com.dustinredmond.apifx;
 import com.dustinredmond.apifx.groovy.GroovyEnvironment;
 import com.dustinredmond.apifx.persistence.RouteDAO;
 import com.dustinredmond.apifx.persistence.StartupScriptDAO;
+import com.dustinredmond.apifx.ui.RouteWindow;
 import com.dustinredmond.apifx.ui.custom.CustomAlert;
 import javafx.application.Platform;
 import org.slf4j.Logger;
@@ -56,14 +57,15 @@ public class AppRouteInitializer implements Runnable {
             }
         });
 
-        Platform.runLater(() ->
+        Platform.runLater(() -> {
             CustomAlert.showInfo("Server Startup complete",
                     String.format(" - Startup Scripts executed successfully:  %s\n" +
-                            " - Startup Scripts executed unsuccessfully: %s\n\n" +
-                            " - Routes enabled successfully:  %s\n" +
-                            " - Routes enabled unsuccessfully: %s", startupSuccess.get(), startupFailure.get(),
-                            routesSuccess.get(), routesFailure.get()))
-        );
+                                    " - Startup Scripts executed unsuccessfully: %s\n\n" +
+                                    " - Routes enabled successfully:  %s\n" +
+                                    " - Routes enabled unsuccessfully: %s", startupSuccess.get(), startupFailure.get(),
+                            routesSuccess.get(), routesFailure.get()));
+            RouteWindow.refreshTable();
+        });
     }
 
     private static final Logger logger = LoggerFactory.getLogger(AppRouteInitializer.class);

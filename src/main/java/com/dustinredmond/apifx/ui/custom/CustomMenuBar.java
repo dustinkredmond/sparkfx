@@ -10,6 +10,7 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
+import spark.Spark;
 
 /**
  * Custom global JavaFX MenuBar that is displayed throughout the application
@@ -33,10 +34,7 @@ public class CustomMenuBar extends MenuBar {
         miExportLib.setOnAction(e -> controller.exportRouteLibrary(RouteLibraryWindow.getTable()));
 
         MenuItem miExit = new MenuItem("Exit program");
-        miExit.setOnAction(e -> {
-            Platform.exit();
-            System.exit(0);
-        });
+        miExit.setOnAction(e -> Platform.exit());
         menuFile.getItems().addAll(miRefresh, miExport, miExportLib, new SeparatorMenuItem(), miExit);
 
         Menu menuRoutes = new Menu("Routes");

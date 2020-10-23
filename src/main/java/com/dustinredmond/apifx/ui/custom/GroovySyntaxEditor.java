@@ -1,6 +1,10 @@
 package com.dustinredmond.apifx.ui.custom;
 
+import com.dustinredmond.apifx.groovy.SparkScript;
+import com.dustinredmond.apifx.ui.UI;
 import javafx.application.Platform;
+import javafx.scene.Scene;
+import javafx.scene.control.ListView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Paint;
@@ -12,9 +16,11 @@ import org.reactfx.Subscription;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.Method;
 import java.time.Duration;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.StringJoiner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -23,7 +29,6 @@ import java.util.regex.Pattern;
  * for Groovy code, more to do to fully support Groovy
  */
 public class GroovySyntaxEditor extends CodeArea {
-
 
     public GroovySyntaxEditor() {
         this.setParagraphGraphicFactory(LineNumberFactory.get(this));
@@ -44,8 +49,25 @@ public class GroovySyntaxEditor extends CodeArea {
         } catch (Exception ignored) {
             // Better to not have syntax highlighting than destroying the QueryEditor
             // Entire program is unusable if this exception doesn't get caught....
-            System.err.println("Unable to find sql-keywords.css file, editors will not highlight syntax.");
+            System.err.println("Unable to find groovy-keywords.css file, editors will not highlight syntax.");
         }
+        this.setOnKeyReleased(e -> {
+            if (e.getCode().equals(KeyCode.F1)) {
+                showAvailableMethods();
+            }
+        });
+    }
+
+    private void showAvailableMethods() {
+        ListView<String> listView = new ListView<>();
+        for (Method m : SparkScript.class.getDeclaredMethods()) {
+            listView.getItems().add(m.toGenericString().replaceAll("com.dustinredmond.apifx.groovy.SparkScript.", ""));
+        }
+        Collections.sort(listView.getItems());
+        CustomStage stage = new CustomStage();
+        stage.setTitle(UI.APP_TITLE + " - Spark Methods Available");
+        stage.setScene(new Scene(listView));
+        stage.show();
     }
 
     private static final String[] KEYWORDS = new String[] {

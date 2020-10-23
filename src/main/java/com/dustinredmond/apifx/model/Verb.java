@@ -8,5 +8,19 @@ public enum Verb {
     GET,
     PUT,
     PATCH,
-    DELETE
+    DELETE,
+    PATH,
+    HEAD,
+    TRACE,
+    CONNECT,
+    OPTIONS,
+    UNKN;
+
+    @Override
+    public String toString() {
+        if (super.toString().equals("UNKN")) {
+            return "Unknown - Server Offline";
+        }
+        return super.toString();
+    }
 }

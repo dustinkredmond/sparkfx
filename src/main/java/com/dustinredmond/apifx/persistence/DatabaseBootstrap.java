@@ -38,7 +38,6 @@ public class DatabaseBootstrap implements Runnable {
                 "ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
                 "URL VARCHAR(255) NOT NULL," +
                 "CODE LONGTEXT NOT NULL," +
-                "VERB VARCHAR(25) NOT NULL," +
                 "CREATED DATE NOT NULL," +
                 "ENABLED BOOLEAN NOT NULL" +
             ");";

@@ -9,6 +9,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import spark.Spark;
 
 import static spark.Spark.port;
 
@@ -20,6 +21,14 @@ public class UI extends Application {
 
     public static final String APP_ICON_URL = UI.class.getResource("icons8-api-48.png").toExternalForm();
     public static final String APP_TITLE = "FxAPI Client";
+
+    @Override
+    public void stop() {
+        if (ServerContext.isActive()) {
+            Spark.stop();
+            Spark.awaitStop();
+        }
+    }
 
     @Override
     public void start(Stage stage) {

@@ -11,18 +11,16 @@ public class Route {
     private Date created;
     private String url;
     private String code;
-    private Verb verb;
     boolean enabled;
 
     public Route() {
         super();
     }
 
-    public Route(long id, String url, String code, Verb verb, Date created, boolean enabled) {
+    public Route(long id, String url, String code, Date created, boolean enabled) {
         this.id = id;
         this.url = url;
         this.code = code;
-        this.verb = verb;
         this.created = created;
         this.enabled = enabled;
     }
@@ -41,14 +39,6 @@ public class Route {
 
     public void setCode(String code) {
         this.code = code;
-    }
-
-    public Verb getVerb() {
-        return verb;
-    }
-
-    public void setVerb(Verb verb) {
-        this.verb = verb;
     }
 
     public Date getCreated() {

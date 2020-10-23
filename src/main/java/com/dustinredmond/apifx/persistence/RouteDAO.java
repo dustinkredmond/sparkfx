@@ -19,7 +19,7 @@ public class RouteDAO implements DAO<Route> {
     public List<Route> findAll() {
 
         List<Route> routes = new ArrayList<>();
-        final String sql = "SELECT ID, URL, CODE, VERB, CREATED, ENABLED FROM ROUTE E";
+        final String sql = "SELECT ID, URL, CODE, CREATED, ENABLED FROM ROUTE E";
 
         try (Connection conn = new ConnectionFactory().connect(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ResultSet rs = ps.executeQuery();
@@ -27,7 +27,6 @@ public class RouteDAO implements DAO<Route> {
                 routes.add(new Route(rs.getLong("ID"),
                         rs.getString("URL"),
                         rs.getString("CODE"),
-                        Verb.valueOf(rs.getString("VERB")),
                         rs.getDate("CREATED"),
                         rs.getBoolean("ENABLED")));
             }
@@ -39,14 +38,13 @@ public class RouteDAO implements DAO<Route> {
 
     @Override
     public boolean create(Route route) {
-        final String sql = "INSERT INTO ROUTE (URL,CODE,VERB,CREATED,ENABLED) VALUES (?,?,?,?,?);";
+        final String sql = "INSERT INTO ROUTE (URL,CODE,CREATED,ENABLED) VALUES (?,?,?,?);";
 
         try (Connection conn = new ConnectionFactory().connect(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, route.getUrl());
             ps.setString(2, route.getCode());
-            ps.setString(3, route.getVerb().name());
-            ps.setDate(4, java.sql.Date.valueOf(LocalDate.now()));
-            ps.setBoolean(5, route.isEnabled());
+            ps.setDate(3, java.sql.Date.valueOf(LocalDate.now()));
+            ps.setBoolean(4, route.isEnabled());
             ps.executeUpdate();
             return true;
         } catch (SQLException ex) {
@@ -70,13 +68,12 @@ public class RouteDAO implements DAO<Route> {
 
     @Override
     public boolean update(Route e) {
-        final String sql = "UPDATE ROUTE SET URL = ?, CODE = ?, VERB = ?, ENABLED = ? WHERE ID = ?";
+        final String sql = "UPDATE ROUTE SET URL = ?, CODE = ?, ENABLED = ? WHERE ID = ?";
         try (Connection conn = new ConnectionFactory().connect(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, e.getUrl());
             ps.setString(2, e.getCode());
-            ps.setString(3, e.getVerb().name());
-            ps.setBoolean(4, e.isEnabled());
-            ps.setLong(5, e.getId());
+            ps.setBoolean(3, e.isEnabled());
+            ps.setLong(4, e.getId());
             ps.executeUpdate();
         } catch (SQLException ex) {
             CustomAlert.showExceptionDialog(ex);

@@ -3,11 +3,9 @@ package com.dustinredmond.apifx.ui;
 import com.dustinredmond.apifx.ServerContext;
 import com.dustinredmond.apifx.groovy.GroovyEnvironment;
 import com.dustinredmond.apifx.model.Route;
-import com.dustinredmond.apifx.model.Verb;
 import com.dustinredmond.apifx.persistence.RouteDAO;
 import com.dustinredmond.apifx.ui.custom.CustomAlert;
 import com.dustinredmond.apifx.ui.custom.GroovySyntaxEditor;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import org.slf4j.Logger;
@@ -30,10 +28,8 @@ import java.util.Date;
  */
 public class RoutesController {
 
-    public boolean addRoute(TextField tfRoute, ComboBox<Verb> cbEndpoint, GroovySyntaxEditor taCode) {
-        if (tfRoute.getText().trim().isEmpty()
-                || cbEndpoint.getSelectionModel().isEmpty()
-                || taCode.getText().trim().isEmpty()) {
+    public boolean addRoute(TextField tfRoute, GroovySyntaxEditor taCode) {
+        if (tfRoute.getText().trim().isEmpty() || taCode.getText().trim().isEmpty()) {
             CustomAlert.showWarning("All fields are required.");
             return false;
         }
@@ -46,7 +42,6 @@ public class RoutesController {
         route.setCreated(new Date());
         route.setEnabled(true);
         route.setUrl(tfRoute.getText());
-        route.setVerb(cbEndpoint.getSelectionModel().getSelectedItem());
         new RouteDAO().create(route);
         logger.info("Created Route: {}", route.getUrl());
         return true;
@@ -54,7 +49,7 @@ public class RoutesController {
 
     public void removeRoute(Route route) {
         if (ServerContext.isActive()) {
-            spark.Spark.unmap(route.getUrl(), route.getVerb().name().toLowerCase());
+            spark.Spark.unmap(route.getUrl());
         }
 
         if (new RouteDAO().remove(route)) {
@@ -78,7 +73,7 @@ public class RoutesController {
 
         if (CustomAlert.showConfirmation(prompt)) {
             if (e.isEnabled() && ServerContext.isActive()) {
-                spark.Spark.unmap(e.getUrl(), e.getVerb().name().toLowerCase());
+                spark.Spark.unmap(e.getUrl());
             } else {
                 if (ServerContext.isActive()) {
                     GroovyEnvironment.getInstance().evaluate(

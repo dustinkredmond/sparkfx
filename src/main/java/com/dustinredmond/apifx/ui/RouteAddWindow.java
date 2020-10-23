@@ -1,7 +1,6 @@
 package com.dustinredmond.apifx.ui;
 
 import com.dustinredmond.apifx.ServerContext;
-import com.dustinredmond.apifx.model.Verb;
 import com.dustinredmond.apifx.ui.custom.CustomAlert;
 import com.dustinredmond.apifx.ui.custom.CustomGrid;
 import com.dustinredmond.apifx.ui.custom.CustomStage;
@@ -30,18 +29,11 @@ public class RouteAddWindow {
 
         TextField tfRoute = new TextField();
         tfRoute.setPromptText("/api/someRoute");
-        grid.add(new Label("API Endpoint:"), 0, rowIndex);
+        grid.add(new Label("URL:"), 0, rowIndex);
         grid.add(tfRoute, 1, rowIndex++);
 
-        ComboBox<Verb> cbEndpoint = new ComboBox<>();
-        cbEndpoint.getItems().addAll(Verb.values());
-        cbEndpoint.getSelectionModel().select(Verb.GET);
-        grid.add(new Label("HTTP Verb:"), 0, rowIndex);
-        grid.add(cbEndpoint, 1, rowIndex++);
-
-
         GroovySyntaxEditor taCode = new GroovySyntaxEditor();
-        taCode.setText(getPromptText(tfRoute.getPromptText(),"get"));
+        taCode.setText(getPromptText(tfRoute.getPromptText()));
         grid.add(taCode, 0, rowIndex++, 2, 1);
         GridPane.setVgrow(taCode, Priority.ALWAYS);
         GridPane.setHgrow(taCode, Priority.ALWAYS);
@@ -51,7 +43,7 @@ public class RouteAddWindow {
         Button buttonAdd = new Button("Add Route");
         buttonAdd.setMinWidth(120);
         buttonAdd.setOnAction(e -> {
-            if (controller.addRoute(tfRoute, cbEndpoint, taCode)) {
+            if (controller.addRoute(tfRoute,taCode)) {
                 stage.hide();
                 RouteWindow.refreshTable();
             }
@@ -63,8 +55,8 @@ public class RouteAddWindow {
     }
 
     private static final RoutesController controller = new RoutesController();
-    private String getPromptText(String route, String verb) {
-        return  verb+"(\""+route+"\", (req,res) -> {\n" +
+    private String getPromptText(String route) {
+        return  "get(\""+route+"\", (req,res) -> {\n" +
                 "\t// Read the documentation at https://sparkjava.com/ \n" +
                 "\t// You can get a RouteLibrary like so: def myLibrary = getLibrary(\"MyLibraryName\");\n" +
                 "\tres.body(\"Hello, World!\");\n" +

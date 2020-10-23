@@ -39,14 +39,8 @@ public class RouteEditWindow {
         int rowIndex = 0;
 
         TextField tfRoute = new TextField(route.getUrl());
-        grid.add(new Label("API Endpoint:"), 0, rowIndex);
+        grid.add(new Label("URL:"), 0, rowIndex);
         grid.add(tfRoute, 1, rowIndex++);
-
-        ComboBox<Verb> cbEndpoint = new ComboBox<>();
-        cbEndpoint.getItems().addAll(Verb.values());
-        cbEndpoint.getSelectionModel().select(route.getVerb());
-        grid.add(new Label("HTTP Verb:"), 0, rowIndex);
-        grid.add(cbEndpoint, 1, rowIndex++);
 
         GroovySyntaxEditor taCode = new GroovySyntaxEditor();
         taCode.setText(route.getCode());
@@ -62,7 +56,7 @@ public class RouteEditWindow {
                 return;
             }
             controller.removeRoute(route);
-            if (controller.addRoute(tfRoute, cbEndpoint, taCode)) {
+            if (controller.addRoute(tfRoute, taCode)) {
                 stage.hide();
                 RouteWindow.refreshTable();
             }

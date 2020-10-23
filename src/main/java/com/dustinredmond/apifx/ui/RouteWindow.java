@@ -8,6 +8,7 @@ import com.dustinredmond.apifx.ui.custom.CustomAlert;
 import com.dustinredmond.apifx.ui.custom.CustomGrid;
 import com.dustinredmond.apifx.ui.custom.CustomMenuBar;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTableCell;
@@ -16,8 +17,11 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+import spark.Spark;
+import spark.routematch.RouteMatch;
 
 import java.util.Date;
+import java.util.Optional;
 
 /**
  * Class to represent the window used to view Routes
@@ -72,8 +76,13 @@ public class RouteWindow {
         columnEnabled.setCellFactory(cell -> new CheckBoxTableCell<>());
         table.getColumns().add(columnEnabled);
 
-        TableColumn<Route, Verb> columnVerb = new TableColumn<>("Verb");
+        TableColumn<Route, Verb> columnVerb = new TableColumn<>("HTTP Method");
         columnVerb.setCellValueFactory(new PropertyValueFactory<>("verb"));
+        columnVerb.setCellValueFactory(e -> {
+            Optional<RouteMatch> route = Spark.routes().stream().filter(r -> r.getMatchUri().equals(e.getValue().getUrl())).findFirst();
+            return route.map(routeMatch -> new SimpleObjectProperty<>(Verb.valueOf(routeMatch.getHttpMethod().name().toUpperCase())))
+                    .orElse(new SimpleObjectProperty<>(Verb.UNKN));
+        });
         table.getColumns().add(columnVerb);
 
         table.setItems(FXCollections.observableArrayList(new RouteDAO().findAll()));
@@ -120,9 +129,7 @@ public class RouteWindow {
         });
 
         table.setPlaceholder(new Label("Welcome to "+UI.APP_TITLE+" click on \"Add Route\" to get started!"));
-
         return table;
-
     }
 
     public static void refreshTable() {
