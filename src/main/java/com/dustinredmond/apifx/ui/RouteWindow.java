@@ -56,11 +56,11 @@ public class RouteWindow {
         UI.getPrimaryStage().getScene().setRoot(root);
     }
 
-    private static final TableView<Route> table = getEndpointsTable();
+    private static final TableView<Route> table = getRoutesTable();
 
     public TableView<Route> getTable() { return table; }
 
-    private static TableView<Route> getEndpointsTable() {
+    private static TableView<Route> getRoutesTable() {
         TableView<Route> table = new TableView<>();
 
         TableColumn<Route, Date> columnCreated = new TableColumn<>("Created");
@@ -79,6 +79,9 @@ public class RouteWindow {
         TableColumn<Route, Verb> columnVerb = new TableColumn<>("HTTP Method");
         columnVerb.setCellValueFactory(new PropertyValueFactory<>("verb"));
         columnVerb.setCellValueFactory(e -> {
+            if (!ServerContext.isActive()) {
+                return new SimpleObjectProperty<>(Verb.UNKN);
+            }
             Optional<RouteMatch> route = Spark.routes().stream().filter(r -> r.getMatchUri().equals(e.getValue().getUrl())).findFirst();
             return route.map(routeMatch -> new SimpleObjectProperty<>(Verb.valueOf(routeMatch.getHttpMethod().name().toUpperCase())))
                     .orElse(new SimpleObjectProperty<>(Verb.UNKN));
@@ -86,7 +89,6 @@ public class RouteWindow {
         table.getColumns().add(columnVerb);
 
         table.setItems(FXCollections.observableArrayList(new RouteDAO().findAll()));
-
         ContextMenu cm = new ContextMenu();
 
         MenuItem miBrowse = new MenuItem("Open in Browser");
