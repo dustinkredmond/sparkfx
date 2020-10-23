@@ -13,10 +13,13 @@ public class CustomExceptionHandler implements Thread.UncaughtExceptionHandler {
 
     @Override
     public void uncaughtException(Thread t, Throwable e) {
-        Platform.runLater(() ->
-            CustomAlert.showExceptionDialog(e)
-        );
-        log.error("Uncaught Exception ({}) on Thread: {}-{}", e.getLocalizedMessage(), t.getId(), t.getName());
+        log.error("Handling uncaught exception | Thread: {} |Message : {}", t.getName(), e.getMessage());
+        if (Platform.isFxApplicationThread()) {
+            CustomAlert.showExceptionDialog(e);
+        } else {
+            Platform.runLater(() -> CustomAlert.showExceptionDialog(e));
+            e.printStackTrace();
+        }
     }
 
     private static final Logger log = LoggerFactory.getLogger(CustomExceptionHandler.class);
