@@ -4,19 +4,11 @@ import com.dustinredmond.apifx.AppRouteInitializer;
 import com.dustinredmond.apifx.ServerContext;
 import com.dustinredmond.apifx.ui.custom.CustomAlert;
 import com.dustinredmond.apifx.ui.custom.CustomExceptionHandler;
-import com.dustinredmond.apifx.ui.custom.CustomMenuBar;
-import com.dustinredmond.apifx.ui.custom.CustomTrayIcon;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-
-import java.util.Optional;
 
 import static spark.Spark.port;
 
@@ -50,37 +42,15 @@ public class UI extends Application {
         stage.show();
         stage.setMaximized(true);
 
-        addTrayIcon(stage);
-
         stage.setOnCloseRequest(e -> {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setGraphic(new ImageView(UI.APP_ICON_URL));
-            ((Stage) alert.getDialogPane().getScene().getWindow()).getIcons().addAll(new Image(UI.APP_ICON_URL));
-            alert.getButtonTypes().clear();
-            ButtonType typeExit = new ButtonType("Exit Program");
-            ButtonType typeMinimize = new ButtonType("Minimize to Tray");
-            alert.getButtonTypes().addAll(typeMinimize, typeExit);
-            alert.setTitle(UI.APP_TITLE);
-            alert.setHeaderText("");
-            alert.setContentText("Do you wish to exit the application and stop any running webserver, or" +
-                    " minimize the application to the system tray?");
-
-            Optional<ButtonType> result = alert.showAndWait();
-            if (result.isPresent() && result.get().equals(typeExit)) {
-                Platform.exit();
-                spark.Spark.stop();
-                spark.Spark.awaitStop();
-                System.exit(0);
+            final String promptClose = "Are you sure you wish to exit the application? This will stop " +
+                    "any HTTP server that is currently running.";
+            if (!CustomAlert.showConfirmation(promptClose)) {
+                e.consume();
             }
         });
     }
 
-    private void addTrayIcon(Stage stage) {
-        CustomTrayIcon icon = new CustomTrayIcon(stage, getClass().getResource("icons8-api-48.png"));
-        icon.setTrayIconTooltip(UI.APP_TITLE);
-        icon.setApplicationTitle(UI.APP_TITLE);
-        icon.show();
-    }
 
     /**
      * Calls the JavaFX {@code Application.launch()} method
