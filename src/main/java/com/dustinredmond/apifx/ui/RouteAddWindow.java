@@ -41,6 +41,21 @@ public class RouteAddWindow {
 
 
         Button buttonAdd = new Button("Add Route");
+
+        taCode.setDisable(true);
+        buttonAdd.setDisable(true);
+        tfRoute.textProperty().addListener(e -> {
+            if (!tfRoute.getText().isEmpty()) {
+                taCode.setDisable(false);
+            } else {
+                taCode.setDisable(true);
+            }
+            if (taCode.getText().trim().isEmpty() || tfRoute.getText().trim().isEmpty()) {
+                buttonAdd.setDisable(true);
+            } else {
+                buttonAdd.setDisable(false);
+            }
+        });
         buttonAdd.setMinWidth(120);
         buttonAdd.setOnAction(e -> {
             if (controller.addRoute(tfRoute,taCode)) {
