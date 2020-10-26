@@ -29,12 +29,16 @@ public class CustomGrid extends GridPane {
         this.getChildren().add(vBox);
     }
 
+    /**
+     * Attempts to style the parent window with the app icon
+     * fails silently if the icon cannot be applied
+     */
     private void applyWindowIcon() {
         if (this.getScene() == null) {
             return;
         }
-        Stage stage = (Stage) this.getScene().getWindow();
         try {
+            Stage stage = (Stage) this.getScene().getWindow();
             stage.getIcons().add(new Image(UI.APP_ICON_URL));
         } catch (Exception ignored) {}
     }
