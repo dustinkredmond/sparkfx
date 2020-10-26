@@ -3,6 +3,10 @@ package com.dustinredmond.apifx.groovy;
 import groovy.lang.GroovyShell;
 import org.codehaus.groovy.control.CompilerConfiguration;
 
+/**
+ * The environment through which all executed Groovy code should be
+ * run, the script run will inherit from {@code com.dustinredmond.apifx.groovy.SparkScript}
+ */
 public class GroovyEnvironment {
 
     /**
