@@ -1,6 +1,6 @@
-## FxAPI Client
+## SparkJava Client
 
-FxAPI client provides an easy to use JavaFX front end to the [Spark Java library](https://sparkjava.com/). Integrating
+SparkJava client provides an easy to use JavaFX front end to the [Spark Java library](https://sparkjava.com/). Integrating
 with this library lets us do really neat stuff. Our client provides an interface to dynamically create
 API endpoints on your server while it's running, edit API logic, as well as remove endpoints.
 
@@ -125,9 +125,9 @@ Simply build with Apache Maven.
   
 ---
 
-### What's the use case for FxAPI Client??
+### What's the use case for SparkJava Client??
 
-FxAPI Client is a great tool to use when developing software that relies on a REST API. We can create complex or simple
+SparkJava Client is a great tool to use when developing software that relies on a REST API. We can create complex or simple
 routes, see what works, what doesn't, and modify the logic all without restarting a server or re-deploying
 a WAR file. It could probably even be used in a production scenario with a few tweaks. (Feel free to send pull requests).
 
@@ -138,5 +138,5 @@ a WAR file. It could probably even be used in a production scenario with a few t
 
 # Thanks for visiting!
 
-Feel free to contribute. If you enjoyed FxAPI Client, please give the repo a star. This helps me know what software
+Feel free to contribute. If you enjoyed SparkJava Client, please give the repo a star. This helps me know what software
 is worth maintaining, and which software should fade into oblivion.
