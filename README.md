@@ -70,8 +70,6 @@ we made instantly. No server reboot required!
 
 Route Libraries can be accessed through the Routes menu.
 
-![Route Menu](./img/menuRoutes.png)
-
 We can then use a RouteLibrary in our code by calling ```getLibrary()```. Calling ```getLibrary("TestLibrary")``` 
 would instantiate the library you see in the screenshot above. We can then call static and instance methods from the
 library.
@@ -85,12 +83,8 @@ of code (if they're enabled) will be run any time the server starts, before the 
 
 We can get there from the "Server" menu up top. This is also where we could start/stop the server if needed.
 
-![Startup Scripts Menu](./img/menuServer.png)
-
 We can enable/disable individual startup scripts, or even run them on demand. Below is a screenshot from the
 right-click menu of a Startup Script.
-
-![Startup Scripts context](./img/startupScripts.png)
 
 ---
 
