@@ -62,7 +62,7 @@
           <finalName>fxapi-client</finalName>
           <archive>
             <manifest>
-              <mainClass>com.dustinredmond.apifx.Main</mainClass>
+              <mainClass>com.dustinredmond.sparkfx.Main</mainClass>
               <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
               <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
             </manifest>
