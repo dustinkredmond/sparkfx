@@ -62,7 +62,8 @@ public class UI extends Application {
                     UI.APP_TITLE));
             return; // let other threads from Main finish
         }
-        String prompt = "Welcome to " + APP_TITLE + "! The embedded application server is currently not running. " +
+        String prompt = "Welcome to " + APP_TITLE + "!\n\n" +
+                "The embedded application server is currently not running.\n" +
                 "Is it okay to start it on port " + ServerContext.getPort() + "?";
         if (CustomAlert.showConfirmation(prompt)) {
             port(ServerContext.getPort());
