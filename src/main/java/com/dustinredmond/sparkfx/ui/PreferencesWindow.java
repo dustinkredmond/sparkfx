@@ -45,7 +45,7 @@ public class PreferencesWindow {
         root.setTop(new CustomMenuBar(window));
 
         grid.add(new Label("Database Path:"), 0, 0);
-        TextField tfPath = new TextField(Prefs.get("dbPath", "./fxapi.db"));
+        TextField tfPath = new TextField(Prefs.get("dbPath", "./sparkfx.db"));
         tfPath.setEditable(false);
         grid.add(tfPath, 1, 0);
         Button buttonOverride = new Button("Override");
