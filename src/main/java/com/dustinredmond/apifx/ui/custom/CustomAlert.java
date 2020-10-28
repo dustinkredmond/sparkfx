@@ -24,6 +24,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -52,7 +53,9 @@ public class CustomAlert {
         addDialogIconTo(alert, true);
         alert.setTitle(applicationTitle);
         alert.setHeaderText(header);
-        alert.setContentText(content);
+        alert.getDialogPane().setContent(new Label(content));
+        alert.setResizable(true);
+        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
         alert.showAndWait();
     }
 
@@ -76,7 +79,9 @@ public class CustomAlert {
         addDialogIconTo(alert, false);
         alert.setTitle(applicationTitle);
         alert.setHeaderText(header);
-        alert.setContentText(content);
+        alert.getDialogPane().setContent(new Label(content));
+        alert.setResizable(true);
+        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
         alert.showAndWait();
     }
 
@@ -102,8 +107,9 @@ public class CustomAlert {
         addDialogIconTo(alert, true);
         alert.setTitle(applicationTitle);
         alert.setHeaderText(headerText);
-        alert.setContentText(contentText);
+        alert.getDialogPane().setContent(new Label(contentText));
         alert.initModality(Modality.APPLICATION_MODAL);
+        alert.setResizable(true);
         alert.getButtonTypes().clear();
         alert.getButtonTypes().addAll(ButtonType.YES, ButtonType.NO);
         Optional<ButtonType> result = alert.showAndWait();
@@ -141,7 +147,8 @@ public class CustomAlert {
         addDialogIconTo(alert, false);
         alert.setTitle(applicationTitle);
         alert.setHeaderText("Exception Occurred");
-        alert.setContentText(message.isEmpty() ? "An unknown error occurred.\n" + e.getMessage() : message);
+        alert.getDialogPane().setContent(new Label(message.isEmpty() ? "An unknown error occurred.\n" + e.getMessage() : message));
+        alert.setResizable(true);
 
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
