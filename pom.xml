@@ -5,8 +5,8 @@
 
   <groupId>com.dustinredmond</groupId>
   <artifactId>fxapi</artifactId>
-  <version>2.0.0-SNAPSHOT</version>
-  <name>fxapi</name>
+  <version>2.0.1-RELEASE</version>
+  <name>sparkfx</name>
   <url>https://www.github.com/dustinkredmond/fxapi</url>
 
   <properties>
