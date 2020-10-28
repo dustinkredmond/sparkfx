@@ -43,6 +43,7 @@ import java.util.regex.Pattern;
  * A custom Java code syntax editor with limited support
  * for Groovy code, more to do to fully support Groovy
  */
+@SuppressWarnings({"RegExpSingleCharAlternation", "RegExpRedundantEscape"})
 public class GroovySyntaxEditor extends CodeArea {
 
     public GroovySyntaxEditor() {
