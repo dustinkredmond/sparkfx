@@ -35,7 +35,7 @@ public class GroovyEnvironment {
             CompilerConfiguration config = new CompilerConfiguration();
             // Set SparkScript as base class this way we can add special methods
             // and expose exactly which Spark methods we choose (i.e. leave out deprecated ones)
-            config.setScriptBaseClass("com.dustinredmond.apifx.groovy.SparkScript");
+            config.setScriptBaseClass("com.dustinredmond.sparkfx.groovy.SparkScript");
             shell = new GroovyShell(config);
         }
         return instance;
