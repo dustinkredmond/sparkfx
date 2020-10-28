@@ -51,7 +51,7 @@ public class ConnectionFactory {
         return conn;
     }
 
-    private static final String DB_URL = "jdbc:sqlite:apifx.db";
+    private static final String DB_URL = "jdbc:sqlite:sparkfx.db";
     private static final String DB_USER_PATH = Prefs.get("dbPath", "");
 
 }
