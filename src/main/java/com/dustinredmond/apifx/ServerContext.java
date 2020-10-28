@@ -18,6 +18,10 @@ package com.dustinredmond.apifx;
 
 import com.dustinredmond.apifx.util.Prefs;
 
+import java.io.IOException;
+import java.net.DatagramSocket;
+import java.net.ServerSocket;
+
 /**
  * Utility class for storing the current details of the
  * server providing access to application Routes
@@ -63,5 +67,20 @@ public class ServerContext {
     public static String getDescription() {
         return String.format("Server: (Port: %s, Running: %s)",
                 getPort(), active ? "Yes" : "No");
+    }
+
+    /**
+     * Returns true if the port is not in use and is available for use
+     * @param port The port to check
+     * @return True if the port is available and can be bound
+     */
+    public static boolean available(int port) {
+        try (ServerSocket ss = new ServerSocket(port); DatagramSocket ds = new DatagramSocket(port)) {
+            ss.setReuseAddress(true);
+            ds.setReuseAddress(true);
+            return true;
+        } catch (IOException ignored) {
+          return false;
+        }
     }
 }

@@ -55,6 +55,13 @@ public class UI extends Application {
         CustomAlert.setIconPath(APP_ICON_URL);
         stage.getIcons().add(new Image(APP_ICON_URL));
         stage.setScene(new Scene(new Group()));
+        if (!ServerContext.available(ServerContext.getPort())) {
+            CustomAlert.showWarning(String.format("Cannot use port %s as it's already in use. Application " +
+                    "will now exit. Please have port 8080 accessible before using %s.",
+                    ServerContext.getPort(),
+                    UI.APP_TITLE));
+            return;
+        }
         String prompt = "Welcome to " + APP_TITLE + "! The embedded application server is currently not running. " +
                 "Is it okay to start it on port " + ServerContext.getPort() + "?";
         if (CustomAlert.showConfirmation(prompt)) {
