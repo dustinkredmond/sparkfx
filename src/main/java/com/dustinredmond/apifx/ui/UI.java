@@ -60,7 +60,7 @@ public class UI extends Application {
                     "will now exit. Please have port 8080 accessible before using %s.",
                     ServerContext.getPort(),
                     UI.APP_TITLE));
-            return;
+            return; // let other threads from Main finish
         }
         String prompt = "Welcome to " + APP_TITLE + "! The embedded application server is currently not running. " +
                 "Is it okay to start it on port " + ServerContext.getPort() + "?";
