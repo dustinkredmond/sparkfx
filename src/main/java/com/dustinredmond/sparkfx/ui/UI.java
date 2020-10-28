@@ -36,7 +36,7 @@ import static spark.Spark.port;
 public class UI extends Application {
 
     public static final String APP_ICON_URL = UI.class.getResource("icons8-api-48.png").toExternalForm();
-    public static final String APP_TITLE = "SparkJava Client";
+    public static final String APP_TITLE = "SparkFX";
 
     @Override
     public void stop() {

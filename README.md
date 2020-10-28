@@ -1,6 +1,6 @@
-## SparkJava Client
+## SparkFX
 
-SparkJava client provides an easy to use JavaFX front end to the [Spark Java library](https://sparkjava.com/). Integrating
+SparkFX provides an easy to use JavaFX front end to the [Spark Java library](https://sparkjava.com/). Integrating
 with this library lets us do really neat stuff. Our client provides an interface to dynamically create
 API endpoints on your server while it's running, edit API logic, as well as remove endpoints.
 
@@ -48,8 +48,8 @@ We can get a previously defined RouteLibrary by the following:
     //Object MyLibraryClass = getLibrary("MyLibraryClass");
 
     // We can then call static or instance methods (since it is actually created with newInstance() in the background)
-    MyLibraryClass.someInstanceMethod();
-    MyLibraryClass.someStaticMethod();
+    MyLibraryClass.someInstanceMethod()
+    MyLibraryClass.someStaticMethod()
 
     // It's best do do something like below where the name is lowercase if you're going
     // to primarily reference the instance instead of the static methods.
@@ -58,7 +58,7 @@ We can get a previously defined RouteLibrary by the following:
     
     // While this is fine if you're going to use all static methods.
     def Printer = getLibrary("Printer")
-    Printer.printAllTheThings();
+    Printer.printAllTheThings()
 ```
 
 As soon as we save our changes to this route, we can visit http://localhost:8080/api/someRoute and see the changes
@@ -119,9 +119,9 @@ Simply build with Apache Maven.
   
 ---
 
-### What's the use case for SparkJava Client??
+### What's the use case for SparkFX??
 
-SparkJava Client is a great tool to use when developing software that relies on a REST API. We can create complex or simple
+SparkFX is a great tool to use when developing software that relies on a REST API. We can create complex or simple
 routes, see what works, what doesn't, and modify the logic all without restarting a server or re-deploying
 a WAR file. It could probably even be used in a production scenario with a few tweaks. (Feel free to send pull requests).
 
@@ -132,5 +132,5 @@ a WAR file. It could probably even be used in a production scenario with a few t
 
 # Thanks for visiting!
 
-Feel free to contribute. If you enjoyed SparkJava Client, please give the repo a star. This helps me know what software
+Feel free to contribute. If you enjoyed SparkFX, please give the repo a star. This helps me know what software
 is worth maintaining, and which software should fade into oblivion.
