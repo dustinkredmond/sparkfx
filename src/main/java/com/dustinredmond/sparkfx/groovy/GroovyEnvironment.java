@@ -18,6 +18,10 @@ package com.dustinredmond.sparkfx.groovy;
 
 import groovy.lang.GroovyShell;
 import org.codehaus.groovy.control.CompilerConfiguration;
+import org.codehaus.groovy.control.customizers.SecureASTCustomizer;
+
+import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * The environment through which all executed Groovy code should be
@@ -36,6 +40,17 @@ public class GroovyEnvironment {
             // Set SparkScript as base class this way we can add special methods
             // and expose exactly which Spark methods we choose (i.e. leave out deprecated ones)
             config.setScriptBaseClass("com.dustinredmond.sparkfx.groovy.SparkScript");
+
+            // Disable calls to java.lang.System methods
+            // This is by no means foolproof e.g.
+            //      def c = java.lang.System
+            //      c.exit(-1)
+            // will succeed with no problem, but is enough to
+            // deter the average developer without malicious intent
+            SecureASTCustomizer customizer = new SecureASTCustomizer();
+            customizer.setReceiversBlackList(Collections.singletonList(System.class.getName()));
+            config.addCompilationCustomizers(customizer);
+
             shell = new GroovyShell(config);
         }
         return instance;
