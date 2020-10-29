@@ -19,6 +19,7 @@ package com.dustinredmond.sparkfx.groovy;
 import com.dustinredmond.sparkfx.model.RouteLibrary;
 import com.dustinredmond.sparkfx.persistence.RouteLibraryDAO;
 import groovy.lang.GroovyClassLoader;
+import groovy.lang.GroovyRuntimeException;
 import groovy.lang.Script;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,8 +55,13 @@ public abstract class SparkScript extends Script {
      */
     public Object getLibrary(String className) {
         RouteLibrary library = new RouteLibraryDAO().findByClassName(className);
-        if (library == null || !library.isEnabled()) {
+        if (library == null) {
             return null;
+        }
+        if (!library.isEnabled()) {
+            throw new RuntimeException(String.format("Library %s is currently " +
+                    "not enabled. This library may not be used until it is " +
+                    "enabled.", className));
         }
         try {
             //noinspection unchecked
