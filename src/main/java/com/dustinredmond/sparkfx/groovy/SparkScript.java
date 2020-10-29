@@ -20,6 +20,8 @@ import com.dustinredmond.sparkfx.model.RouteLibrary;
 import com.dustinredmond.sparkfx.persistence.RouteLibraryDAO;
 import groovy.lang.GroovyClassLoader;
 import groovy.lang.Script;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import spark.ExceptionHandler;
 import spark.Filter;
 import spark.HaltException;
@@ -188,5 +190,7 @@ public abstract class SparkScript extends Script {
     public static ModelAndView modelAndView(Object model, String viewName) { return new ModelAndView(model, viewName); }
     public static List<RouteMatch> routes() { return Spark.routes(); }
     public static int activeThreadCount() { return Spark.activeThreadCount(); }
+
+    public static final Logger logger = LoggerFactory.getLogger(SparkScript.class);
 
 }
