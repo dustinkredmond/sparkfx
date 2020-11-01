@@ -16,6 +16,8 @@ package com.dustinredmond.sparkfx.model;
  *  limitations under the License.
  */
 
+import com.dustinredmond.sparkfx.ServerContext;
+
 /**
  * Represents an HTTP method
  */
@@ -35,7 +37,7 @@ public enum Verb {
     @Override
     public String toString() {
         if (super.toString().equals("UNKN")) {
-            return "Unknown - Server Offline";
+            return ServerContext.isActive() ? "Unknown" : "Unknown - Server Offline";
         }
         return super.toString();
     }
