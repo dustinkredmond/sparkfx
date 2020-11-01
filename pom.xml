@@ -63,7 +63,8 @@
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
-                    <appendAssemblyId>true</appendAssemblyId>
+                    <!-- If we want to work with Launch4j dynamically -->
+                    <appendAssemblyId>false</appendAssemblyId>
                     <finalName>SparkFX</finalName>
                     <archive>
                         <manifest>
@@ -79,6 +80,30 @@
                         <goals>
                             <goal>single</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.6.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <!-- Change to false to execute Windows EXE creation -->
+                            <skip>true</skip>
+                            <!-- Please supply path to launch4j -->
+                            <executable>/home/dustin/launch4j/launch4j</executable>
+                            <workingDirectory>./</workingDirectory>
+                            <arguments>
+                                <argument>launch4j-build.cfg.xml</argument>
+                            </arguments>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
