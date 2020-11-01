@@ -98,10 +98,10 @@
                             <!-- Change to false to execute Windows EXE creation -->
                             <skip>true</skip>
                             <!-- Please supply path to launch4j -->
-                            <executable>/home/dustin/launch4j/launch4j</executable>
+                            <executable>C:\Program Files (x86)\Launch4j\launch4j.exe</executable>
                             <workingDirectory>./</workingDirectory>
                             <arguments>
-                                <argument>launch4j-build.cfg.xml</argument>
+                                <argument>${project.basedir}/launch4j-build.cfg.xml</argument>
                             </arguments>
                         </configuration>
                     </execution>
