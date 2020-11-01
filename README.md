@@ -111,12 +111,19 @@ secure("/path/to/keystore.jks", "password", null, null)
 
 ## Build
 
-Simply build with Apache Maven.
+Simply build with Apache Maven to build an executable JAR
   1. Clone the repo
   2. `cd` into the directory
   3. Run `mvn clean package`
   4. Double click the JAR file in the target folder to run
   
+  
+To build a Windows EXE file
+  1. Install launch4j
+  2. Provide path to launch4j.exe in POM.xml
+  3. In the exec plugin in POM.xml, change skip to false
+  4. Run `mvn clean package`
+  5. Find the SparkFX.exe in the `./target` directory
 ---
 
 ### What's the use case for SparkFX??
