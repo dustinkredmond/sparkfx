@@ -21,6 +21,7 @@ import com.dustinredmond.sparkfx.model.RouteLibrary;
 import com.dustinredmond.sparkfx.persistence.RouteLibraryDAO;
 import com.dustinredmond.sparkfx.ui.custom.CustomGrid;
 import com.dustinredmond.sparkfx.ui.custom.CustomMenuBar;
+import com.dustinredmond.sparkfx.util.FXUtils;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.scene.control.*;
@@ -83,6 +84,7 @@ public class RouteLibraryWindow {
 
         table.setPlaceholder(new Label("No Libraries exist. Click on \"Add Library\" to get started."));
         table.setItems(FXCollections.observableArrayList(new RouteLibraryDAO().findAll()));
+        FXUtils.autoResizeColumns(table);
 
         ContextMenu cm = new ContextMenu();
         MenuItem miEnableDisable = new MenuItem("Enable/Disable Library");
@@ -124,6 +126,7 @@ public class RouteLibraryWindow {
 
     public static void refreshTableView() {
         table.setItems(FXCollections.observableArrayList(new RouteLibraryDAO().findAll()));
+        FXUtils.autoResizeColumns(table);
     }
 
     public static TableView<RouteLibrary> getTable() {

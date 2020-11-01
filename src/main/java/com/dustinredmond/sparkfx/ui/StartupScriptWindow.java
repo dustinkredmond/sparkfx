@@ -21,6 +21,7 @@ import com.dustinredmond.sparkfx.model.StartupScript;
 import com.dustinredmond.sparkfx.persistence.StartupScriptDAO;
 import com.dustinredmond.sparkfx.ui.custom.CustomGrid;
 import com.dustinredmond.sparkfx.ui.custom.CustomMenuBar;
+import com.dustinredmond.sparkfx.util.FXUtils;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.scene.control.*;
@@ -38,6 +39,7 @@ public class StartupScriptWindow {
 
     public static void refreshTable() {
         table.setItems(FXCollections.observableArrayList(new StartupScriptDAO().findAll()));
+        FXUtils.autoResizeColumns(table);
     }
 
     public void show(RouteWindow parentWindow) {
@@ -115,6 +117,7 @@ public class StartupScriptWindow {
         });
 
         table.setItems(FXCollections.observableArrayList(new StartupScriptDAO().findAll()));
+        FXUtils.autoResizeColumns(table);
 
         return table;
     }

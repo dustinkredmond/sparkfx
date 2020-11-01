@@ -23,6 +23,7 @@ import com.dustinredmond.sparkfx.persistence.RouteDAO;
 import com.dustinredmond.sparkfx.ui.custom.CustomAlert;
 import com.dustinredmond.sparkfx.ui.custom.CustomGrid;
 import com.dustinredmond.sparkfx.ui.custom.CustomMenuBar;
+import com.dustinredmond.sparkfx.util.FXUtils;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -105,6 +106,7 @@ public class RouteWindow {
         table.getColumns().add(columnVerb);
 
         table.setItems(FXCollections.observableArrayList(new RouteDAO().findAll()));
+        FXUtils.autoResizeColumns(table);
         ContextMenu cm = new ContextMenu();
 
         MenuItem miBrowse = new MenuItem("Open in Browser");
@@ -152,6 +154,7 @@ public class RouteWindow {
 
     public static void refreshTable() {
         table.setItems(FXCollections.observableArrayList(new RouteDAO().findAll()));
+        FXUtils.autoResizeColumns(table);
     }
 
     private static final RoutesController controller = new RoutesController();
