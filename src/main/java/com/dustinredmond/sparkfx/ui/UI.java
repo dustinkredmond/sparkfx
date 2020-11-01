@@ -57,7 +57,7 @@ public class UI extends Application {
         stage.setScene(new Scene(new Group()));
         if (!ServerContext.available(ServerContext.getPort())) {
             CustomAlert.showWarning(String.format("Cannot use port %s as it's already in use. Application " +
-                    "will now exit. Please have port 8080 accessible before using %s.",
+                    "will now exit.\nPlease have port 8080 accessible before using %s.",
                     ServerContext.getPort(),
                     UI.APP_TITLE));
             return; // let other threads from Main finish
