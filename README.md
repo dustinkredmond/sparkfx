@@ -124,6 +124,15 @@ To build a Windows EXE file
   3. In the exec plugin in POM.xml, change skip to false
   4. Run `mvn clean package`
   5. Find the SparkFX.exe in the `./target` directory
+
+---
+
+## Cross-platform execution
+
+Tested on both Windows 10 and Linux (Ubuntu 20.04 LTS).
+Should work fine on MacOS, but I rarely use it, so cannot guarantee stability.
+Launch4j is used to build the Windows EXE file, if desired, enable the step in POM.xml
+
 ---
 
 ### What's the use case for SparkFX??
