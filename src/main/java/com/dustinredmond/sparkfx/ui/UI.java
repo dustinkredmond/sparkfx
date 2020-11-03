@@ -76,8 +76,8 @@ public class UI extends Application {
         stage.setMaximized(true);
 
         stage.setOnCloseRequest(e -> {
-            final String promptClose = "Are you sure you wish to exit the application? This will stop " +
-                    "any HTTP server that is currently running.";
+            final String promptClose = "Are you sure you wish to exit the application?\n" +
+                    "This will stop any HTTP server that is currently running.";
             if (!CustomAlert.showConfirmation(promptClose)) {
                 e.consume();
             }
