@@ -19,7 +19,6 @@ package com.dustinredmond.sparkfx.groovy;
 import com.dustinredmond.sparkfx.model.RouteLibrary;
 import com.dustinredmond.sparkfx.persistence.RouteLibraryDAO;
 import groovy.lang.GroovyClassLoader;
-import groovy.lang.GroovyRuntimeException;
 import groovy.lang.Script;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,7 +44,7 @@ import java.util.function.Consumer;
  * to this classes' methods.
  *
  */
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "RedundantSuppression"})
 public abstract class SparkScript extends Script {
 
     /**
@@ -64,8 +63,8 @@ public abstract class SparkScript extends Script {
                     "enabled.", className));
         }
         try {
-            //noinspection unchecked
-            return new GroovyClassLoader().parseClass(library.getCode()).getDeclaredConstructor().newInstance();
+            return ((Class<?>) new GroovyClassLoader().parseClass(library.getCode()))
+                    .getDeclaredConstructor().newInstance();
         } catch (InstantiationException | NoSuchMethodException
                 | InvocationTargetException | IllegalAccessException e) {
             throw new RuntimeException(
