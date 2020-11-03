@@ -19,6 +19,8 @@ package com.dustinredmond.sparkfx;
 import com.dustinredmond.sparkfx.persistence.DatabaseBootstrap;
 import com.dustinredmond.sparkfx.ui.UI;
 import com.dustinredmond.sparkfx.ui.custom.CustomExceptionHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static spark.Spark.port;
 
@@ -28,12 +30,19 @@ import static spark.Spark.port;
 public class Main {
 
     public static void main(String[] args) {
-        if (args.length > 0) {
-            for (String arg : args) {
-                if (arg.equals("--headless")) {
+        try {
+            for (int i = 0; i < args.length; i++) {
+                if (args[i].equals("--headless")) {
                     ServerContext.setHeadless(true);
+                    log.info("Running in headless mode");
+                }
+                if (args[i].equals("--port")) {
+                    ServerContext.setPort(Integer.parseInt(args[i+1]));
+                    log.info("Running on port {}", ServerContext.getPort());
                 }
             }
+        } catch (Exception e) {
+            System.err.println("Malformed arguments received. Please check the documentation.");
         }
 
         // Make sure to set for each Thread in our application
@@ -56,4 +65,6 @@ public class Main {
             }
         }
     }
+
+    private static final Logger log = LoggerFactory.getLogger(Main.class);
 }

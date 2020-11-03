@@ -64,6 +64,10 @@ public class ServerContext {
         }
     }
 
+    public static void setPort(int appPort) {
+        Prefs.putLong("appPort", (long) appPort);
+    }
+
     /**
      * Returns a String displaying server status and port.
      * @return A String description of the current server context
