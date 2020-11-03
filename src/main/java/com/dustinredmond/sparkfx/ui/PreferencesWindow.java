@@ -103,7 +103,7 @@ public class PreferencesWindow {
         buttonOverridePort.setOnAction(e -> {
             Optional<String> port = tid.showAndWait();
             port.ifPresent(s -> Prefs.putLong("appPort", Long.parseLong(s)));
-            CustomAlert.showWarning("The application will now exit. Please restart the application.");
+            CustomAlert.showInfo("The application will now exit. Please restart the application.");
             System.exit(0);
         });
 
