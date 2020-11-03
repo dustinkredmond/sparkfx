@@ -47,6 +47,11 @@ import java.util.regex.Pattern;
 public class GroovySyntaxEditor extends CodeArea {
 
     public GroovySyntaxEditor() {
+        this.visibleProperty().addListener(e -> {
+            if (!this.isVisible()) {
+                this.dispose();
+            }
+        });
         this.setParagraphGraphicFactory(LineNumberFactory.get(this));
         this.setLineHighlighterFill(Paint.valueOf("GAINSBORO"));
         this.setLineHighlighterOn(true);
@@ -65,7 +70,7 @@ public class GroovySyntaxEditor extends CodeArea {
         } catch (Exception ignored) {
             // Better to not have syntax highlighting than destroying the QueryEditor
             // Entire program is unusable if this exception doesn't get caught....
-            System.err.println("Unable to find groovy-keywords.css file, editors will not highlight syntax.");
+            log.error("Unable to find groovy-keywords.css file, editors will not highlight syntax.");
         }
         this.setOnKeyReleased(e -> {
             if (e.getCode().equals(KeyCode.F1)) {
@@ -217,20 +222,6 @@ public class GroovySyntaxEditor extends CodeArea {
     public void setText(String text) {
         this.clear();
         this.appendText(text);
-    }
-
-    /**
-     * FIXME Deprecated in Java9+, handle on the front end
-     *  when we migrate to Java9
-     * @throws Throwable the throwable
-     */
-    @Override
-    protected void finalize() throws Throwable {
-        try {
-            this.dispose();
-        } finally {
-            super.finalize();
-        }
     }
 
     private static final Logger log = LoggerFactory.getLogger(GroovySyntaxEditor.class);
