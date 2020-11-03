@@ -20,10 +20,6 @@ import com.dustinredmond.sparkfx.ServerContext;
 import groovy.lang.GroovyShell;
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.control.CompilerConfiguration;
-import org.codehaus.groovy.control.customizers.SecureASTCustomizer;
-
-import java.util.Arrays;
-import java.util.Collections;
 
 /**
  * The environment through which all executed Groovy code should be
@@ -57,6 +53,8 @@ public class GroovyEnvironment {
         try {
             shell.evaluate(code);
         } catch (CompilationFailedException e) {
+            // If not running headlessly, throw exception up to
+            // our custom UncaughtExceptionHandler
             if (ServerContext.isHeadless()) {
                 e.printStackTrace();
             } else {
