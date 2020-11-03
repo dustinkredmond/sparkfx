@@ -62,6 +62,7 @@ public class StartupScriptEditWindow {
         Button buttonAdd = new Button("Save Changes");
         buttonAdd.setOnAction(e -> {
             if (controller.editStartupScript(script, tfDescription.getText(), gse.getText(), cbEnabled.isSelected())) {
+                gse.dispose();
                 stage.hide();
                 StartupScriptWindow.refreshTable();
             }

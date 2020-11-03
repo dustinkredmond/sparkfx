@@ -68,6 +68,7 @@ public class RouteAddWindow {
         buttonAdd.setMinWidth(120);
         buttonAdd.setOnAction(e -> {
             if (controller.addRoute(tfRoute,taCode)) {
+                taCode.dispose();
                 stage.hide();
                 RouteWindow.refreshTable();
             }

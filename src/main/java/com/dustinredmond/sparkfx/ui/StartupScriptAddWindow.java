@@ -55,6 +55,7 @@ public class StartupScriptAddWindow {
         Button buttonAdd = new Button("Add Script");
         buttonAdd.setOnAction(e -> {
             if (controller.addStartupScript(tfDescription.getText(), cbEnabled.isSelected(), gse.getText())) {
+                gse.dispose();
                 stage.hide();
             }
         });

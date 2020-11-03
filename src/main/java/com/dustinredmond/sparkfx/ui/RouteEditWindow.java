@@ -72,6 +72,7 @@ public class RouteEditWindow {
             }
             controller.removeRoute(route);
             if (controller.addRoute(tfRoute, taCode)) {
+                taCode.dispose();
                 stage.hide();
                 RouteWindow.refreshTable();
             }

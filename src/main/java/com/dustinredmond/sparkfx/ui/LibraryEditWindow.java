@@ -58,6 +58,7 @@ public class LibraryEditWindow {
         grid.add(buttonAdd, 0, 2);
         buttonAdd.setOnAction(e -> {
             if (controller.editLibrary(lib, tfClassName.getText(), se.getText())) {
+                se.dispose();
                 stage.hide();
             }
         });

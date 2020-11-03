@@ -52,6 +52,7 @@ public class LibraryAddWindow {
         grid.add(buttonAdd, 0, 2);
         buttonAdd.setOnAction(e -> {
             if (controller.addLibrary(tfClassName.getText(), se.getText())) {
+                se.dispose();
                 stage.hide();
             }
         });
