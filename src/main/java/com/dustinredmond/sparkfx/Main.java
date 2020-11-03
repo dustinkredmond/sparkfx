@@ -30,20 +30,7 @@ import static spark.Spark.port;
 public class Main {
 
     public static void main(String[] args) {
-        try {
-            for (int i = 0; i < args.length; i++) {
-                if (args[i].equals("--headless")) {
-                    ServerContext.setHeadless(true);
-                    log.info("Running in headless mode");
-                }
-                if (args[i].equals("--port")) {
-                    ServerContext.setPort(Integer.parseInt(args[i+1]));
-                    log.info("Running on port {}", ServerContext.getPort());
-                }
-            }
-        } catch (Exception e) {
-            System.err.println("Malformed arguments received. Please check the documentation.");
-        }
+        parseArgs(args);
 
         // Make sure to set for each Thread in our application
         Thread.currentThread().setUncaughtExceptionHandler(new CustomExceptionHandler());
@@ -63,6 +50,24 @@ public class Main {
                 }
                 break;
             }
+        }
+    }
+
+    private static void parseArgs(String[] args) {
+        try {
+            for (int i = 0; i < args.length; i++) {
+                if (args[i].equals("--headless")) {
+                    ServerContext.setHeadless(true);
+                    log.info("Running in headless mode");
+                }
+                if (args[i].equals("--port")) {
+                    ServerContext.setPort(Integer.parseInt(args[i+1]));
+                    log.info("Running on port {}", ServerContext.getPort());
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("Malformed arguments received. Please check the documentation.");
+            System.exit(-1);
         }
     }
 
