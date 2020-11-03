@@ -16,6 +16,7 @@ package com.dustinredmond.sparkfx.ui.custom;
  *  limitations under the License.
  */
 
+import com.dustinredmond.sparkfx.ServerContext;
 import javafx.application.Platform;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +31,10 @@ public class CustomExceptionHandler implements Thread.UncaughtExceptionHandler {
     @Override
     public void uncaughtException(Thread t, Throwable e) {
         log.error("Handling uncaught exception | Thread: {} |Message : {}", t.getName(), e.getMessage());
+        if (ServerContext.isHeadless()) {
+            return; // don't show dialogs, just log it
+        }
+
         if (Platform.isFxApplicationThread()) {
             CustomAlert.showExceptionDialog(e);
         } else {

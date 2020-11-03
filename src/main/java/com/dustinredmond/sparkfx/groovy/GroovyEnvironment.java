@@ -16,7 +16,9 @@ package com.dustinredmond.sparkfx.groovy;
  *  limitations under the License.
  */
 
+import com.dustinredmond.sparkfx.ServerContext;
 import groovy.lang.GroovyShell;
+import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.control.CompilerConfiguration;
 import org.codehaus.groovy.control.customizers.SecureASTCustomizer;
 
@@ -52,7 +54,15 @@ public class GroovyEnvironment {
      * @param code Code to evaluate
      */
     public void evaluate(String code) {
-        shell.evaluate(code);
+        try {
+            shell.evaluate(code);
+        } catch (CompilationFailedException e) {
+            if (ServerContext.isHeadless()) {
+                e.printStackTrace();
+            } else {
+                throw e;
+            }
+        }
     }
 
     private static GroovyEnvironment instance;

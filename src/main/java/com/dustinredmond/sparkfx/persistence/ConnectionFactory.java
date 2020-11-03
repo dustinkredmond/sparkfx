@@ -16,6 +16,7 @@ package com.dustinredmond.sparkfx.persistence;
  *  limitations under the License.
  */
 
+import com.dustinredmond.sparkfx.ServerContext;
 import com.dustinredmond.sparkfx.util.Prefs;
 
 import java.sql.Connection;
@@ -46,7 +47,12 @@ public class ConnectionFactory {
                 conn = DriverManager.getConnection(DB_URL);
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Unable to get local database connection.", e);
+            if (ServerContext.isHeadless()) {
+                e.printStackTrace();
+                return null;
+            } else {
+                throw new RuntimeException("Unable to get local database connection.", e);
+            }
         }
         return conn;
     }

@@ -20,12 +20,22 @@ import com.dustinredmond.sparkfx.persistence.DatabaseBootstrap;
 import com.dustinredmond.sparkfx.ui.UI;
 import com.dustinredmond.sparkfx.ui.custom.CustomExceptionHandler;
 
+import static spark.Spark.port;
+
 /**
  * Application entry point
  */
 public class Main {
 
     public static void main(String[] args) {
+        if (args.length > 0) {
+            for (String arg : args) {
+                if (arg.equals("--headless")) {
+                    ServerContext.setHeadless(true);
+                }
+            }
+        }
+
         // Make sure to set for each Thread in our application
         Thread.currentThread().setUncaughtExceptionHandler(new CustomExceptionHandler());
         Thread t = new Thread(new DatabaseBootstrap());
@@ -34,7 +44,14 @@ public class Main {
         while (true) {
             // Wait for DB tables to be created before allowing user input
             if (!t.isAlive()) {
-                new UI().startUi(args);
+                if (!ServerContext.isHeadless()) {
+                    new UI().startUi(args);
+                } else {
+                    port(ServerContext.getPort());
+                    spark.Spark.init();
+                    ServerContext.setActive(true);
+                    new AppRouteInitializer().run();
+                }
                 break;
             }
         }

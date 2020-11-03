@@ -16,6 +16,7 @@ package com.dustinredmond.sparkfx.persistence;
  *  limitations under the License.
  */
 
+import com.dustinredmond.sparkfx.ServerContext;
 import com.dustinredmond.sparkfx.model.StartupScript;
 import com.dustinredmond.sparkfx.ui.custom.CustomAlert;
 import javafx.application.Platform;
@@ -89,7 +90,11 @@ public class StartupScriptDAO implements DAO<StartupScript> {
                         rs.getBoolean("ENABLED")));
             }
         } catch (SQLException e) {
-            Platform.runLater(() -> CustomAlert.showExceptionDialog(e));
+            if (ServerContext.isHeadless()) {
+                e.printStackTrace();
+            } else {
+                Platform.runLater(() -> CustomAlert.showExceptionDialog(e));
+            }
         }
         return scripts;
     }

@@ -29,6 +29,7 @@ import java.net.ServerSocket;
 public class ServerContext {
 
     private static boolean active;
+    private static boolean headless;
 
     /**
      * Returns the embedded HTTP server's status.
@@ -46,6 +47,9 @@ public class ServerContext {
     public static void setActive(boolean active) {
         ServerContext.active = active;
     }
+
+    public static boolean isHeadless() { return ServerContext.headless; }
+    public static void setHeadless(boolean enabled) { ServerContext.headless = enabled; }
 
     /**
      * Returns the preferred, or default port of the server.
