@@ -135,6 +135,18 @@ Launch4j is used to build the Windows EXE file, if desired, enable the step in P
 
 ---
 
+## Command line options
+
+ - `--headless`
+ 
+   Runs the app in headless mode, no GUI is started. All enabled Startup Scripts and Routes will be processed.
+ 
+ - `--port xxxx`
+ 
+   Runs Spark on the specified port. E.g. `--port 8080` will run the server on port 8080.
+
+---
+
 ### What's the use case for SparkFX??
 
 SparkFX is a great tool to use when developing software that relies on a REST API. We can create complex or simple
