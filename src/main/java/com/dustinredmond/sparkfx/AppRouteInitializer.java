@@ -21,11 +21,10 @@ import com.dustinredmond.sparkfx.persistence.RouteDAO;
 import com.dustinredmond.sparkfx.persistence.StartupScriptDAO;
 import com.dustinredmond.sparkfx.ui.RouteWindow;
 import com.dustinredmond.sparkfx.ui.custom.CustomAlert;
+import java.util.concurrent.atomic.AtomicInteger;
 import javafx.application.Platform;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.concurrent.atomic.AtomicInteger;
 
 
 /**
@@ -34,11 +33,10 @@ import java.util.concurrent.atomic.AtomicInteger;
  * run. After calling run() on this class, a developer should be sure to set the
  * appropriate {@code com.dustinredmond.apifx.ServerContext} variables.
  */
-public class AppRouteInitializer implements Runnable {
+public final class AppRouteInitializer implements Runnable {
 
     @Override
     public void run() {
-
         AtomicInteger startupSuccess = new AtomicInteger(0);
         AtomicInteger startupFailure = new AtomicInteger(0);
         new StartupScriptDAO().findAll().forEach(script -> {
@@ -49,9 +47,11 @@ public class AppRouteInitializer implements Runnable {
                 } catch (Exception e) {
                     startupFailure.incrementAndGet();
                     if (!ServerContext.isHeadless()) {
-                        Platform.runLater(() -> CustomAlert.showExceptionDialog(e,
-                                "Exception occurred when executing Startup Script.\n" +
-                                        "Description: " + script.getDescription()));
+                        Platform.runLater(() ->
+                            CustomAlert.showExceptionDialog(e,
+                            "Exception occurred when executing "
+                                + "Startup Script.\n"
+                                + "Description: " + script.getDescription()));
                     } else {
                         e.printStackTrace();
                     }
@@ -69,36 +69,49 @@ public class AppRouteInitializer implements Runnable {
             try {
                 GroovyEnvironment.getInstance().evaluate(route.getCode());
                 routesSuccess.incrementAndGet();
-                logger.info("Enabled Route: {}", route.getUrl());
+                LOG.info("Enabled Route: {}", route.getUrl());
             } catch (Exception e) {
                 routesFailure.incrementAndGet();
                 if (ServerContext.isHeadless()) {
                     e.printStackTrace();
                 } else {
                     Platform.runLater(() -> CustomAlert.showExceptionDialog(e,
-                            "Exception occurred when creating route: "+ route.getUrl()));
+                        "Exception occurred when creating route: "
+                            + route.getUrl()));
                 }
             }
         });
 
-        output(startupSuccess.get(), startupFailure.get(), routesSuccess.get(), routesFailure.get());
+        output(startupSuccess.get(),
+            startupFailure.get(),
+            routesSuccess.get(),
+            routesFailure.get());
         if (!ServerContext.isHeadless()) {
             RouteWindow.refreshTable();
         }
     }
 
 
-    private void output(int startupSuccess, int startupFailure, int routesSuccess, int routesFailure) {
-        logger.info("Server Startup complete");
-        logger.info("Startup Scripts Executed (Success {} | Failure {})", startupSuccess, startupFailure);
-        logger.info("Routes Enabled (Success {} | Failure {})", routesSuccess, routesFailure);
+    private void output(final int startupSuccess, final int startupFailure,
+        final int routesSuccess, final int routesFailure) {
+        LOG.info("Server Startup complete");
+        LOG.info("Startup Scripts Executed (Success {} | Failure {})",
+            startupSuccess, startupFailure);
+        LOG.info("Routes Enabled (Success {} | Failure {})",
+            routesSuccess, routesFailure);
         if (!ServerContext.isHeadless()) {
-            Platform.runLater(() -> CustomAlert.showInfo("Server Startup complete", String.format("- Startup Scripts executed successfully: %s\n" +
-                    "- Startup Scripts executed unsuccessfully: %s\n\n" +
-                    "- Routes enabled successfully: %s\n" +
-                    "- Routes enabled unsuccessfully: %s", startupSuccess, startupFailure, routesSuccess, routesFailure)));
+            Platform.runLater(() ->
+                CustomAlert.showInfo("Server Startup complete",
+                String.format(
+                 "- Startup Scripts executed successfully: %s\n"
+                 + "- Startup Scripts executed unsuccessfully: %s\n\n"
+                 + "- Routes enabled successfully: %s\n"
+                 + "- Routes enabled unsuccessfully: %s",
+                    startupSuccess, startupFailure,
+                    routesSuccess, routesFailure)));
         }
     }
 
-    private static final Logger logger = LoggerFactory.getLogger(AppRouteInitializer.class);
+    private static final Logger LOG = LoggerFactory
+        .getLogger(AppRouteInitializer.class);
 }

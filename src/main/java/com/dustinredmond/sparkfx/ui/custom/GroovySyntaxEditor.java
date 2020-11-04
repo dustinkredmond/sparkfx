@@ -41,7 +41,7 @@ import java.util.regex.Pattern;
 
 /**
  * A custom Java code syntax editor with limited support
- * for Groovy code, more to do to fully support Groovy
+ * for Groovy code, more to do to fully support Groovy.
  */
 @SuppressWarnings({"RegExpSingleCharAlternation", "RegExpRedundantEscape"})
 public class GroovySyntaxEditor extends CodeArea {
@@ -56,21 +56,31 @@ public class GroovySyntaxEditor extends CodeArea {
         this.setLineHighlighterFill(Paint.valueOf("GAINSBORO"));
         this.setLineHighlighterOn(true);
 
-        final Pattern whiteSpace = Pattern.compile( "^\\s+" );
+        final Pattern whiteSpace = Pattern.compile("^\\s+");
         this.addEventHandler(KeyEvent.KEY_PRESSED, KE -> {
             if (KE.getCode() == KeyCode.ENTER) {
                 int caretPosition = this.getCaretPosition();
                 int currentParagraph = this.getCurrentParagraph();
-                Matcher m0 = whiteSpace.matcher(this.getParagraph(currentParagraph-1).getSegments().get(0) );
-                if (m0.find()) Platform.runLater(() -> this.insertText(caretPosition, m0.group()));
+                Matcher m0 = whiteSpace.matcher(
+                    this.getParagraph(currentParagraph - 1)
+                        .getSegments().get(0));
+                if (m0.find()) {
+                    Platform.runLater(() ->
+                        this.insertText(caretPosition, m0.group()));
+                }
             }
         });
         try {
-            this.getStylesheets().add(this.getClass().getResource("groovy-keywords.css").toExternalForm());
+            this.getStylesheets().add(
+                this.getClass().getResource("groovy-keywords.css")
+                    .toExternalForm());
         } catch (Exception ignored) {
-            // Better to not have syntax highlighting than destroying the QueryEditor
-            // Entire program is unusable if this exception doesn't get caught....
-            log.error("Unable to find groovy-keywords.css file, editors will not highlight syntax.");
+            // Better to not have syntax highlighting
+            // than destroying the QueryEditor
+            // Entire program is unusable if this exception
+            // doesn't get caught....
+            LOG.error("Unable to find groovy-keywords.css file, "
+                + "editors will not highlight syntax.");
         }
         this.setOnKeyReleased(e -> {
             if (e.getCode().equals(KeyCode.F1)) {
@@ -82,7 +92,10 @@ public class GroovySyntaxEditor extends CodeArea {
     private void showAvailableMethods() {
         ListView<String> listView = new ListView<>();
         for (Method m : SparkScript.class.getDeclaredMethods()) {
-            listView.getItems().add(m.toGenericString().replaceAll("com.dustinredmond.apifx.groovy.SparkScript.", ""));
+            listView.getItems().add(
+                m.toGenericString()
+                    .replaceAll("com.dustinredmond.apifx.groovy.SparkScript.",
+                        ""));
         }
         Collections.sort(listView.getItems());
         CustomStage stage = new CustomStage();
@@ -156,15 +169,20 @@ public class GroovySyntaxEditor extends CodeArea {
             "with",
     };
 
-    private static final String KEYWORD_PATTERN = "\\b(" + String.join("|", KEYWORDS) + ")\\b";
+    private static final String KEYWORD_PATTERN =
+        "\\b(" + String.join("|", KEYWORDS) + ")\\b";
     private static final String PAREN_PATTERN = "\\(|\\)";
     private static final String BRACE_PATTERN = "\\{|\\}";
     private static final String BRACKET_PATTERN = "\\[|\\]";
     private static final String SEMICOLON_PATTERN = "\\;";
-    private static final String STRING_PATTERN = "\"([^\"\\\\]|\\\\.)*\"";
-    private static final String SINGLE_QUOTE_STRING_PATTERN = "'([^'\\\\]|\\\\.)*'";
-    private static final String COMMENT_PATTERN = "//[^\n]*" + "|" + "/\\*(.|\\R)*?\\*/";
-    private static final String TRIPLE_QUOTE_PATTERN = "(?:\\n[\\t ]*)\\\"{3}(.*?)\\\"{3}'";
+    private static final String STRING_PATTERN =
+        "\"([^\"\\\\]|\\\\.)*\"";
+    private static final String SINGLE_QUOTE_STRING_PATTERN =
+        "'([^'\\\\]|\\\\.)*'";
+    private static final String COMMENT_PATTERN =
+        "//[^\n]*" + "|" + "/\\*(.|\\R)*?\\*/";
+    private static final String TRIPLE_QUOTE_PATTERN =
+        "(?:\\n[\\t ]*)\\\"{3}(.*?)\\\"{3}'";
     private static final String LITERAL_PATTERN = "\\b[0-9]+";
     private static final Pattern PATTERN = Pattern.compile(
             "(?<KEYWORD>" + KEYWORD_PATTERN + ")"
@@ -179,50 +197,67 @@ public class GroovySyntaxEditor extends CodeArea {
                     + "|(?<LITERAL>" + LITERAL_PATTERN + ")"
     );
 
-    private static StyleSpans<Collection<String>> computeHighlighting(String text) {
+    private static StyleSpans<Collection<String>>
+    computeHighlighting(final String text) {
         Matcher matcher = PATTERN.matcher(text);
         int lastKwEnd = 0;
-        StyleSpansBuilder<Collection<String>> spansBuilder = new StyleSpansBuilder<>();
+        StyleSpansBuilder<Collection<String>> spansBuilder =
+            new StyleSpansBuilder<>();
         while (matcher.find()) {
             String styleClass =
-                    matcher.group("KEYWORD") != null ? "keyword" :
-                    matcher.group("PAREN") != null ? "paren" :
-                    matcher.group("BRACE") != null ? "brace" :
-                    matcher.group("BRACKET") != null ? "bracket" :
-                    matcher.group("SEMICOLON") != null ? "semicolon" :
-                    matcher.group("STRING") != null ? "string" :
-                    matcher.group("SINGLESTRING") != null ? "string" :
-                    matcher.group("COMMENT") != null ? "comment" :
-                    matcher.group("TRIPLEQUOTE") != null ? "comment" :
-                    matcher.group("LITERAL") != null ? "literal" :
-                    null; assert styleClass != null;
-            spansBuilder.add(Collections.emptyList(), matcher.start() - lastKwEnd);
-            spansBuilder.add(Collections.singleton(styleClass), matcher.end() - matcher.start());
+                    matcher.group("KEYWORD") != null ? "keyword"
+                        : matcher.group("PAREN") != null ? "paren"
+                        : matcher.group("BRACE") != null ? "brace"
+                        : matcher.group("BRACKET") != null ? "bracket"
+                        : matcher.group("SEMICOLON") != null ? "semicolon"
+                        : matcher.group("STRING") != null ? "string"
+                        : matcher.group("SINGLESTRING") != null ? "string"
+                        : matcher.group("COMMENT") != null ? "comment"
+                        : matcher.group("TRIPLEQUOTE") != null ? "comment"
+                        : matcher.group("LITERAL") != null ? "literal"
+                        : null; assert styleClass != null;
+            spansBuilder.add(
+                Collections.emptyList(), matcher.start() - lastKwEnd
+            );
+            spansBuilder.add(
+                Collections.singleton(styleClass),
+                matcher.end() - matcher.start()
+            );
             lastKwEnd = matcher.end();
         }
         spansBuilder.add(Collections.emptyList(), text.length() - lastKwEnd);
         return spansBuilder.create();
     }
 
-    public Subscription highlightingSubscription = this.multiPlainChanges().successionEnds(Duration.ofMillis(500))
-            .subscribe(ignore -> this.setStyleSpans(0, computeHighlighting(this.getText())));
+    private final Subscription highlightingSubscription =
+        this.multiPlainChanges().successionEnds(
+            Duration.ofMillis(DEFAULT_SUBSCRIPTION_MS))
+            .subscribe(ignore ->
+                this.setStyleSpans(0, computeHighlighting(this.getText())));
 
     /**
-     * Call before disposing of the SyntaxEditor
+     * Call before disposing of the SyntaxEditor.
      */
     public void dispose() {
-        log.debug("Disposed of {} - {}", this.getClass().getName(), this.toString());
+        LOG.debug("Disposed of {} - {}",
+            this.getClass().getName(), this.toString());
         highlightingSubscription.unsubscribe();
     }
 
     /**
-     * Sets the text of the editor, clearing any previously entered text
+     * Sets the text of the editor, clearing any previously entered text.
      * @param text The text to set
      */
-    public void setText(String text) {
+    public void setText(final String text) {
         this.clear();
         this.appendText(text);
     }
 
-    private static final Logger log = LoggerFactory.getLogger(GroovySyntaxEditor.class);
+    /**
+     * GroovySyntaxEditor's default logger.
+     */
+    private static final Logger LOG = LoggerFactory
+        .getLogger(GroovySyntaxEditor.class);
+
+    private static final int DEFAULT_SUBSCRIPTION_MS = 500;
 }

@@ -22,18 +22,20 @@ import com.dustinredmond.sparkfx.ui.custom.CustomAlert;
 import javafx.scene.control.TableView;
 
 /**
- * Class to represent the window used to Delete StartupScripts
+ * Class to represent the window used to Delete StartupScripts.
  */
-public class StartupScriptDeleteWindow {
+public final class StartupScriptDeleteWindow {
 
     public void show() {
         if (table.getSelectionModel().isEmpty()) {
-            CustomAlert.showWarning("Please first select an item from the table.");
+            CustomAlert.showWarning(
+                "Please first select an item from the table.");
             return;
         }
 
         StartupScript script = table.getSelectionModel().getSelectedItem();
-        String prompt = "Are you sure you wish to delete the Startup Script?\n\nDescription: " + script.getDescription();
+        String prompt = "Are you sure you wish to delete "
+            + "the Startup Script?\n\nDescription: " + script.getDescription();
 
         if (CustomAlert.showConfirmation(prompt)) {
             new StartupScriptDAO().remove(script);
@@ -41,5 +43,6 @@ public class StartupScriptDeleteWindow {
         }
     }
 
-    private static final TableView<StartupScript> table = StartupScriptWindow.getTable();
+    private static final TableView<StartupScript> table =
+        StartupScriptWindow.getTable();
 }

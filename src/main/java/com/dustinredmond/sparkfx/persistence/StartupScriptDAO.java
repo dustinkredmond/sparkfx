@@ -29,14 +29,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Data Access Object for the {@code com.dustinredmond.apifx.model.StartupScript}
+ * Data Access Object for the
+ * {@code com.dustinredmond.apifx.model.StartupScript}.
  */
-public class StartupScriptDAO implements DAO<StartupScript> {
+@SuppressWarnings("SqlNoDataSourceInspection")
+public final class StartupScriptDAO implements DAO<StartupScript> {
 
     @Override
-    public boolean update(StartupScript script) {
-        final String sql = "UPDATE STARTUP_SCRIPT SET DESCRIPTION = ?, CODE = ?, ENABLED = ? WHERE ID = ?";
-        try (Connection conn = db.connect(); PreparedStatement ps = conn.prepareStatement(sql)) {
+    public boolean update(final StartupScript script) {
+        final String sql =
+            "UPDATE STARTUP_SCRIPT "
+                + "SET DESCRIPTION = ?, CODE = ?, ENABLED = ? "
+                + "WHERE ID = ?";
+        try (Connection conn = DB.connect();
+            PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, script.getDescription());
             ps.setString(2, script.getCode());
             ps.setBoolean(3, script.isEnabled());
@@ -50,9 +56,10 @@ public class StartupScriptDAO implements DAO<StartupScript> {
     }
 
     @Override
-    public boolean remove(StartupScript script) {
+    public boolean remove(final StartupScript script) {
         final String sql = "DELETE FROM STARTUP_SCRIPT WHERE ID = ?";
-        try (Connection conn = db.connect(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = DB.connect();
+            PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setLong(1, script.getId());
             ps.executeUpdate();
             return true;
@@ -63,9 +70,12 @@ public class StartupScriptDAO implements DAO<StartupScript> {
     }
 
     @Override
-    public boolean create(StartupScript script) {
-        final String sql = "INSERT INTO STARTUP_SCRIPT (DESCRIPTION,CODE,ENABLED) VALUES (?,?,?)";
-        try (Connection conn = db.connect(); PreparedStatement ps = conn.prepareStatement(sql)) {
+    public boolean create(final StartupScript script) {
+        final String sql =
+            "INSERT INTO STARTUP_SCRIPT (DESCRIPTION,CODE,ENABLED) "
+                + "VALUES (?,?,?)";
+        try (Connection conn = DB.connect();
+            PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, script.getDescription());
             ps.setString(2, script.getCode());
             ps.setBoolean(3, script.isEnabled());
@@ -80,8 +90,10 @@ public class StartupScriptDAO implements DAO<StartupScript> {
     @Override
     public List<StartupScript> findAll() {
         List<StartupScript> scripts = new ArrayList<>();
-        final String sql = "SELECT ID, DESCRIPTION, CODE, ENABLED FROM STARTUP_SCRIPT";
-        try (Connection conn = db.connect(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        final String sql = "SELECT ID, DESCRIPTION, CODE, ENABLED "
+            + "FROM STARTUP_SCRIPT";
+        try (Connection conn = DB.connect();
+            PreparedStatement ps = conn.prepareStatement(sql)) {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 scripts.add(new StartupScript(rs.getLong("ID"),
@@ -99,5 +111,8 @@ public class StartupScriptDAO implements DAO<StartupScript> {
         return scripts;
     }
 
-    private static final ConnectionFactory db = new ConnectionFactory();
+    /**
+     * Default ConnectionFactory for the application's database.
+     */
+    private static final ConnectionFactory DB = new ConnectionFactory();
 }

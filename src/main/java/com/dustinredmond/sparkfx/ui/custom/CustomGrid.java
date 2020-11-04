@@ -31,23 +31,33 @@ import javafx.stage.Stage;
 public class CustomGrid extends GridPane {
 
     public CustomGrid() {
-        this.setHgap(5);
-        this.setVgap(5);
-        this.setPadding(new Insets(10));
+        this.setHgap(DEFAULT_GAP_SIZE);
+        this.setVgap(DEFAULT_GAP_SIZE);
+        this.setPadding(new Insets(DEFAULT_PADDING));
         applyWindowIcon();
     }
 
-    public CustomGrid(VBox vBox) {
-        this.setHgap(5);
-        this.setVgap(5);
-        this.setPadding(new Insets(10));
+    public CustomGrid(final VBox vBox) {
+        this.setHgap(DEFAULT_GAP_SIZE);
+        this.setVgap(DEFAULT_GAP_SIZE);
+        this.setPadding(new Insets(DEFAULT_PADDING));
         applyWindowIcon();
         this.getChildren().add(vBox);
     }
 
     /**
+     * Default size for GridPane's hGap and vGap.
+     */
+    private static final int DEFAULT_GAP_SIZE = 5;
+
+    /**
+     * Default amount of Insets padding.
+     */
+    private static final int DEFAULT_PADDING = 10;
+
+    /**
      * Attempts to style the parent window with the app icon
-     * fails silently if the icon cannot be applied
+     * fails silently if the icon cannot be applied.
      */
     private void applyWindowIcon() {
         if (this.getScene() == null) {
@@ -56,6 +66,6 @@ public class CustomGrid extends GridPane {
         try {
             Stage stage = (Stage) this.getScene().getWindow();
             stage.getIcons().add(new Image(UI.APP_ICON_URL));
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) { }
     }
 }

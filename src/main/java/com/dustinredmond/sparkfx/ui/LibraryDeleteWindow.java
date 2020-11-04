@@ -22,21 +22,26 @@ import com.dustinredmond.sparkfx.ui.custom.CustomAlert;
 import javafx.scene.control.TableView;
 
 /**
- * Class representing the window used to delete RouteLibrary objects
+ * Class representing the window used to delete RouteLibrary objects.
  */
-public class LibraryDeleteWindow {
+public final class LibraryDeleteWindow {
 
     public void show() {
         TableView<RouteLibrary> table = RouteLibraryWindow.getTable();
         if (table.getSelectionModel().isEmpty()) {
-            CustomAlert.showWarning("Please select an item from the table first.");
+            CustomAlert.showWarning(
+                "Please select an item from the table first."
+            );
             return;
         }
         RouteLibrary clazz = table.getSelectionModel().getSelectedItem();
         String associatedClasses = controller.getAssociatedRoutes(clazz);
-        String displayClasses = associatedClasses.length() > 0 ? associatedClasses : "None";
-        String prompt = String.format("Are you sure you want to remove %s? The following routes " +
-                "currently depend on this library:\n\n%s", clazz.getClassName(), displayClasses);
+        String displayClasses = associatedClasses.length() > 0
+            ? associatedClasses : "None";
+        String prompt = String.format("Are you sure you want to remove %s? "
+            + "The following routes "
+            + "currently depend on this library:\n\n%s",
+            clazz.getClassName(), displayClasses);
         if (!CustomAlert.showConfirmation(prompt)) {
             return;
         }
@@ -45,6 +50,7 @@ public class LibraryDeleteWindow {
         RouteLibraryWindow.refreshTableView();
     }
 
-    private static final RouteLibraryController controller = new RouteLibraryController();
+    private final RouteLibraryController controller =
+        new RouteLibraryController();
 
 }

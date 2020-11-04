@@ -29,14 +29,20 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Data Access Object for the {@code com.dustinredmond.apifx.model.RouteLibrary} class.
+ * Data Access Object for the
+ * {@code com.dustinredmond.apifx.model.RouteLibrary} class.
  */
-public class RouteLibraryDAO implements DAO<RouteLibrary> {
+@SuppressWarnings("SqlResolve")
+public final class RouteLibraryDAO implements DAO<RouteLibrary> {
 
     @Override
-    public boolean update(RouteLibrary lib) {
-        final String sql = "UPDATE GROOVY SET CLASS_NAME = ?, CODE = ?, MODIFIED = ?, ENABLED = ? WHERE ID = ?";
-        try (Connection conn = db.connect(); PreparedStatement ps = conn.prepareStatement(sql)) {
+    public boolean update(final RouteLibrary lib) {
+        final String sql =
+            "UPDATE GROOVY"
+            + " SET CLASS_NAME = ?, CODE = ?, MODIFIED = ?, ENABLED = ?"
+            + " WHERE ID = ?";
+        try (Connection conn = DB.connect();
+            PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, lib.getClassName());
             ps.setString(2, lib.getCode());
             ps.setDate(3, java.sql.Date.valueOf(LocalDate.now()));
@@ -51,9 +57,10 @@ public class RouteLibraryDAO implements DAO<RouteLibrary> {
     }
 
     @Override
-    public boolean remove(RouteLibrary lib) {
+    public boolean remove(final RouteLibrary lib) {
         final String sql = "DELETE FROM GROOVY WHERE ID = ?";
-        try (Connection conn = db.connect(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = DB.connect();
+            PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setLong(1, lib.getId());
             return ps.executeUpdate() == 1;
         } catch (SQLException e) {
@@ -63,9 +70,12 @@ public class RouteLibraryDAO implements DAO<RouteLibrary> {
     }
 
     @Override
-    public boolean create(RouteLibrary lib) {
-        final String sql = "INSERT INTO GROOVY (CLASS_NAME,CODE,CREATED,ENABLED) VALUES (?,?,?,?)";
-        try (Connection conn = db.connect(); PreparedStatement ps = conn.prepareStatement(sql)) {
+    public boolean create(final RouteLibrary lib) {
+        final String sql = "INSERT INTO GROOVY "
+            + "(CLASS_NAME,CODE,CREATED,ENABLED) "
+            + "VALUES (?,?,?,?)";
+        try (Connection conn = DB.connect();
+            PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, lib.getClassName());
             ps.setString(2, lib.getCode());
             ps.setDate(3, java.sql.Date.valueOf(LocalDate.now()));
@@ -81,9 +91,12 @@ public class RouteLibraryDAO implements DAO<RouteLibrary> {
     @Override
     public List<RouteLibrary> findAll() {
         List<RouteLibrary> classes = new ArrayList<>();
-        final String sql = "SELECT ID, CLASS_NAME, CODE, CREATED, MODIFIED, ENABLED FROM GROOVY";
+        final String sql = "SELECT "
+            + "ID, CLASS_NAME, CODE, CREATED, MODIFIED, ENABLED "
+            + "FROM GROOVY";
 
-        try (Connection conn = db.connect(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = DB.connect();
+            PreparedStatement ps = conn.prepareStatement(sql)) {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 RouteLibrary clazz = new RouteLibrary();
@@ -107,12 +120,16 @@ public class RouteLibraryDAO implements DAO<RouteLibrary> {
      * @param className The class name of the RouteLibrary to retrieve
      * @return RouteLibrary, or null if not found
      */
-    public RouteLibrary findByClassName(String className) {
+    public RouteLibrary findByClassName(final String className) {
         Optional<RouteLibrary> clazz = findAll().stream()
                 .filter(c -> c.getClassName().equals(className))
                 .findFirst();
         return clazz.orElse(null);
     }
 
-    private static final ConnectionFactory db = new ConnectionFactory();
+    /**
+     * Default ConnectionFactory for getting Connections
+     * to the application's Database.
+     */
+    private static final ConnectionFactory DB = new ConnectionFactory();
 }

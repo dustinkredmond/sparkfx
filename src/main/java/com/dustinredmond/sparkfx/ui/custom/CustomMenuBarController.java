@@ -46,15 +46,16 @@ import java.time.LocalDate;
 
 import static spark.Spark.port;
 
-public class CustomMenuBarController {
+public final class CustomMenuBarController {
 
     /**
      * Exports a Route's code to a chosen file on the user's filesystem.
      * @param table TableView containing selected Route
      */
-    public void exportRoute(TableView<Route> table) {
+    public void exportRoute(final TableView<Route> table) {
         if (table.getSelectionModel().isEmpty()) {
-            CustomAlert.showWarning("Please select a route from the table first.");
+            CustomAlert.showWarning(
+                "Please select a route from the table first.");
             return;
         }
 
@@ -66,7 +67,8 @@ public class CustomMenuBarController {
         File file = getFile(fileName);
         if (file != null) {
             try {
-                Files.write(Paths.get(file.getAbsolutePath()), route.getCode().getBytes(), StandardOpenOption.CREATE_NEW);
+                Files.write(Paths.get(file.getAbsolutePath()),
+                    route.getCode().getBytes(), StandardOpenOption.CREATE_NEW);
             } catch (IOException ex) {
                 CustomAlert.showExceptionDialog(ex, "Unable to write file");
             }
@@ -86,37 +88,42 @@ public class CustomMenuBarController {
         HBox linkBox = new HBox(linkLabel, link);
         linkBox.setAlignment(Pos.CENTER_LEFT);
 
-        VBox vBox = new VBox(5, new Label(UI.APP_TITLE+"\n"+"Version: "+version),
-                taLicense,
-                linkBox);
+        VBox vBox = new VBox(5,
+            new Label(UI.APP_TITLE + "\n" + "Version: " + version),
+            taLicense,
+            linkBox);
         stage.setScene(new Scene(new CustomGrid(vBox)));
         stage.setResizable(false);
         stage.showAndWait();
     }
 
-    private void browseLink(String linkText) {
-        try { Desktop.getDesktop().browse(new URI(linkText)); } catch (Exception ignored) {}
+    private void browseLink(final String linkText) {
+        try {
+            Desktop.getDesktop().browse(new URI(linkText));
+        } catch (Exception ignored) { }
     }
 
-    private static final String LICENSE_TEXT = " Copyright \u00A9 "+ LocalDate.now().getYear() +" " +
-            "Dustin K. Redmond (dustin@dustinredmond.com)\n" +
-            "\n" +
-            "   Licensed under the Apache License, Version 2.0 (the \"License\");\n" +
-            "   you may not use this file except in compliance with the License.\n" +
-            "   You may obtain a copy of the License at\n" +
-            "\n" +
-            "       http://www.apache.org/licenses/LICENSE-2.0\n" +
-            "\n" +
-            "   Unless required by applicable law or agreed to in writing, software\n" +
-            "   distributed under the License is distributed on an \"AS IS\" BASIS,\n" +
-            "   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n" +
-            "   See the License for the specific language governing permissions and\n" +
-            "   limitations under the License.";
+    private static final String LICENSE_TEXT =
+        " Copyright \u00A9 " + LocalDate.now().getYear()
+           + " Dustin K. Redmond (dustin@dustinredmond.com)\n"
+           + "\n"
+           + "   Licensed under the Apache License, Version 2.0 (the \"License\");\n"
+           + "   you may not use this file except in compliance with the License.\n"
+           + "   You may obtain a copy of the License at\n"
+           + "\n"
+           + "       http://www.apache.org/licenses/LICENSE-2.0\n"
+           + "\n"
+           + "   Unless required by applicable law or agreed to in writing, software\n"
+           + "   distributed under the License is distributed on an \"AS IS\" BASIS,\n"
+           + "   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n"
+           + "   See the License for the specific language governing permissions and\n"
+           + "   limitations under the License.";
 
-    public void startServer(MenuItem miStart, MenuItem miStop) {
-        log.debug("Service started on port {}", ServerContext.getPort());
+    public void startServer(final MenuItem miStart, final MenuItem miStop) {
+        LOG.debug("Service started on port {}", ServerContext.getPort());
         ServerContext.setActive(true);
-        UI.getPrimaryStage().setTitle(UI.APP_TITLE + " - " + ServerContext.getDescription());
+        UI.getPrimaryStage().setTitle(UI.APP_TITLE + " - "
+            + ServerContext.getDescription());
         port(ServerContext.getPort());
         spark.Spark.init();
         new Thread(new AppRouteInitializer()).start();
@@ -124,10 +131,11 @@ public class CustomMenuBarController {
         miStop.setDisable(false);
     }
 
-    public void stopServer(MenuItem miStart, MenuItem miStop) {
+    public void stopServer(final MenuItem miStart, final MenuItem miStop) {
         spark.Spark.stop();
         ServerContext.setActive(false);
-        UI.getPrimaryStage().setTitle(UI.APP_TITLE + " - " + ServerContext.getDescription());
+        UI.getPrimaryStage().setTitle(UI.APP_TITLE + " - "
+            + ServerContext.getDescription());
         miStart.setDisable(false);
         miStop.setDisable(true);
     }
@@ -136,9 +144,10 @@ public class CustomMenuBarController {
      * Exports the code from a selected RouteLibrary to the user's filesystem.
      * @param table TableView containing selected Route
      */
-    public void exportRouteLibrary(TableView<RouteLibrary> table) {
+    public void exportRouteLibrary(final TableView<RouteLibrary> table) {
         if (table.getSelectionModel().isEmpty()) {
-            CustomAlert.showWarning("Please first select a Route Library from the table.");
+            CustomAlert.showWarning(
+                "Please first select a Route Library from the table.");
             return;
         }
 
@@ -146,22 +155,28 @@ public class CustomMenuBarController {
         File file = getFile(lib.getClassName());
         if (file != null) {
             try {
-                Files.write(Paths.get(file.getAbsolutePath()), lib.getCode().getBytes(), StandardOpenOption.CREATE_NEW);
+                Files.write(Paths.get(file.getAbsolutePath()),
+                    lib.getCode().getBytes(), StandardOpenOption.CREATE_NEW);
             } catch (IOException ex) {
                 CustomAlert.showExceptionDialog(ex, "Unable to write file");
             }
         } // if file is null, user closed save dialog
     }
 
-    private File getFile(String initFileName) {
+    private File getFile(final String initFileName) {
         FileChooser fc = new FileChooser();
         fc.setInitialFileName(initFileName);
         fc.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Groovy Source Code File", "*.groovy"),
-                new FileChooser.ExtensionFilter("Java Source Code File", "*.java"),
-                new FileChooser.ExtensionFilter("All files", "*.*"));
+                new FileChooser.ExtensionFilter(
+                    "Groovy Source Code File", "*.groovy"),
+                new FileChooser.ExtensionFilter(
+                    "Java Source Code File", "*.java"),
+                new FileChooser.ExtensionFilter(
+                    "All files", "*.*"
+        ));
         return fc.showSaveDialog(null);
     }
 
-    private static final Logger log = LoggerFactory.getLogger(CustomMenuBarController.class);
+    private static final Logger LOG = LoggerFactory
+        .getLogger(CustomMenuBarController.class);
 }

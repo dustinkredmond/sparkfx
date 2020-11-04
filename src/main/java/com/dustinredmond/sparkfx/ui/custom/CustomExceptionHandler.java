@@ -26,11 +26,14 @@ import org.slf4j.LoggerFactory;
  * The custom implementation shows a custom Alert dialog with the Exception's
  * stack trace, as well as logs the Exception to the console.
  */
-public class CustomExceptionHandler implements Thread.UncaughtExceptionHandler {
+public final class CustomExceptionHandler
+    implements Thread.UncaughtExceptionHandler {
 
     @Override
-    public void uncaughtException(Thread t, Throwable e) {
-        log.error("Handling uncaught exception | Thread: {} |Message : {}", t.getName(), e.getMessage());
+    public void uncaughtException(
+        final Thread t, final Throwable e) {
+        LOG.error("Handling uncaught exception | Thread: {} |Message : {}",
+            t.getName(), e.getMessage());
         if (ServerContext.isHeadless()) {
             return; // don't show dialogs, just log it
         }
@@ -43,5 +46,9 @@ public class CustomExceptionHandler implements Thread.UncaughtExceptionHandler {
         }
     }
 
-    private static final Logger log = LoggerFactory.getLogger(CustomExceptionHandler.class);
+    /**
+     * Logger for CustomExceptionHandler.
+     */
+    private static final Logger LOG = LoggerFactory.getLogger(
+        CustomExceptionHandler.class);
 }

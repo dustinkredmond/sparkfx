@@ -19,9 +19,9 @@ package com.dustinredmond.sparkfx.model;
 import java.util.Date;
 
 /**
- * Represents library style code that can be called from a Route
+ * Represents library style code that can be called from a Route.
  */
-public class RouteLibrary {
+public final class RouteLibrary {
 
     private long id;
     private String className;
@@ -30,7 +30,8 @@ public class RouteLibrary {
     private Date modified;
     private boolean enabled;
 
-    public RouteLibrary(String className, String code, Date created, Date modified, boolean enabled) {
+    public RouteLibrary(final String className, final String code,
+        final Date created, final Date modified, final boolean enabled) {
         this.className = className;
         this.code = code;
         this.created = created;
@@ -38,7 +39,9 @@ public class RouteLibrary {
         this.enabled = enabled;
     }
 
-    public RouteLibrary() { super(); }
+    public RouteLibrary() {
+        super();
+    }
 
     public long getId() {
         return id;

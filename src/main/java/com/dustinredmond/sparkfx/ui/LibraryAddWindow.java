@@ -27,9 +27,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 
 /**
- * Class representing the window used to add RouteLibrary objects
+ * Class representing the window used to add RouteLibrary objects.
  */
-public class LibraryAddWindow {
+public final class LibraryAddWindow {
 
     public void show() {
         CustomStage stage = new CustomStage();
@@ -63,12 +63,13 @@ public class LibraryAddWindow {
     }
 
     private String getPromptText() {
-        return "class SomeLibrary {\n" +
-                "    def someUtilityMethod() {\n" +
-                "        println \"Some work was done...\";\n" +
-                "    }\n" +
-                "}";
+        return "class SomeLibrary {\n"
+               + "    def someUtilityMethod() {\n"
+               + "        println \"Some work was done...\";\n"
+               + "    }\n"
+               + "}";
     }
 
-    private static final RouteLibraryController controller = new RouteLibraryController();
+    private final RouteLibraryController controller =
+        new RouteLibraryController();
 }

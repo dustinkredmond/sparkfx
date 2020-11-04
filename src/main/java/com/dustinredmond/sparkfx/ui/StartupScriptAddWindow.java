@@ -28,9 +28,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 
 /**
- * Class to represent the window used to add StartupScripts
+ * Class to represent the window used to add StartupScripts.
  */
-public class StartupScriptAddWindow {
+public final class StartupScriptAddWindow {
 
     public void show() {
         CustomStage stage = new CustomStage();
@@ -54,7 +54,11 @@ public class StartupScriptAddWindow {
 
         Button buttonAdd = new Button("Add Script");
         buttonAdd.setOnAction(e -> {
-            if (controller.addStartupScript(tfDescription.getText(), cbEnabled.isSelected(), gse.getText())) {
+            if (controller.addStartupScript(
+                tfDescription.getText(),
+                cbEnabled.isSelected(),
+                gse.getText())) {
+
                 gse.dispose();
                 stage.hide();
             }
@@ -66,8 +70,10 @@ public class StartupScriptAddWindow {
         stage.show();
     }
 
-    private static final StartupScriptController controller = new StartupScriptController();
-    private static final String PROMPT = "import spark.Spark as http\n\n" +
-            "// Example script: GZIP everything\n" +
-            "http.after((req,res) -> res.header(\"Content-Encoding\", \"gzip\"));";
+    private static final StartupScriptController controller =
+        new StartupScriptController();
+    private static final String PROMPT = "import spark.Spark as http\n\n"
+        + "// Example script: GZIP everything\n"
+        + "http.after((req,res) -> "
+        + "res.header(\"Content-Encoding\", \"gzip\"));";
 }

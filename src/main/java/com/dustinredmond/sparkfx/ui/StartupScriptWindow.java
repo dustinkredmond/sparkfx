@@ -24,7 +24,13 @@ import com.dustinredmond.sparkfx.ui.custom.CustomMenuBar;
 import com.dustinredmond.sparkfx.util.FXUtils;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.SeparatorMenuItem;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
@@ -33,16 +39,17 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 
 /**
- * Class used to represent the window for displaying StartupScripts
+ * Class used to represent the window for displaying StartupScripts.
  */
-public class StartupScriptWindow {
+public final class StartupScriptWindow {
 
     public static void refreshTable() {
-        table.setItems(FXCollections.observableArrayList(new StartupScriptDAO().findAll()));
+        table.setItems(FXCollections.observableArrayList(
+            new StartupScriptDAO().findAll()));
         FXUtils.autoResizeColumns(table);
     }
 
-    public void show(RouteWindow parentWindow) {
+    public void show(final RouteWindow parentWindow) {
         BorderPane root = new BorderPane();
         CustomGrid grid = new CustomGrid();
         root.setCenter(grid);
@@ -63,27 +70,35 @@ public class StartupScriptWindow {
         GridPane.setVgrow(table, Priority.ALWAYS);
 
         UI.getPrimaryStage().getScene().setRoot(root);
-        UI.getPrimaryStage().setTitle(UI.APP_TITLE + " - Startup Scripts - " + ServerContext.getDescription());
+        UI.getPrimaryStage().setTitle(UI.APP_TITLE
+            + " - Startup Scripts - " + ServerContext.getDescription());
     }
 
     private static final TableView<StartupScript> table = getTableView();
 
-    public static TableView<StartupScript> getTable() { return  StartupScriptWindow.table; }
+    public static TableView<StartupScript> getTable() {
+        return  StartupScriptWindow.table;
+    }
 
     private static TableView<StartupScript> getTableView() {
         TableView<StartupScript> table = new TableView<>();
 
-        TableColumn<StartupScript, String> columnDesc = new TableColumn<>("Description");
-        columnDesc.setCellValueFactory(new PropertyValueFactory<>("description"));
+        TableColumn<StartupScript, String> columnDesc =
+            new TableColumn<>("Description");
+        columnDesc.setCellValueFactory(
+            new PropertyValueFactory<>("description"));
         table.getColumns().add(columnDesc);
 
-        TableColumn<StartupScript, Boolean> columnEnabled = new TableColumn<>("Enabled");
-        columnEnabled.setCellValueFactory(s -> new SimpleBooleanProperty(s.getValue().isEnabled()));
+        TableColumn<StartupScript, Boolean> columnEnabled =
+            new TableColumn<>("Enabled");
+        columnEnabled.setCellValueFactory(s ->
+            new SimpleBooleanProperty(s.getValue().isEnabled()));
         columnEnabled.setCellFactory(c -> new CheckBoxTableCell<>());
         table.getColumns().add(columnEnabled);
 
         ContextMenu cm = new ContextMenu();
-        MenuItem miEnableDisable = new MenuItem("Enable/Disable Startup Script");
+        MenuItem miEnableDisable =
+            new MenuItem("Enable/Disable Startup Script");
         miEnableDisable.setOnAction(e -> controller.enableDisableScript());
         MenuItem miRun = new MenuItem("Run On Demand");
         miRun.setOnAction(e -> controller.runOnDemand());
@@ -93,7 +108,9 @@ public class StartupScriptWindow {
         miEdit.setOnAction(e -> new StartupScriptEditWindow().show());
         MenuItem miDelete = new MenuItem("Delete Startup Script");
         miDelete.setOnAction(e -> new StartupScriptDeleteWindow().show());
-        cm.getItems().addAll(miEnableDisable, miRun, new SeparatorMenuItem(), miAdd, miEdit, miDelete);
+        cm.getItems().addAll(
+            miEnableDisable, miRun, new SeparatorMenuItem(),
+            miAdd, miEdit, miDelete);
 
         table.setContextMenu(cm);
 
@@ -110,17 +127,20 @@ public class StartupScriptWindow {
         });
 
         table.setOnMouseClicked(m -> {
-            if (m.getButton().equals(MouseButton.PRIMARY) && m.getClickCount() == 2
+            if (m.getButton().equals(MouseButton.PRIMARY)
+                && m.getClickCount() == 2
                     && !table.getSelectionModel().isEmpty()) {
                 new StartupScriptEditWindow().show();
             }
         });
 
-        table.setItems(FXCollections.observableArrayList(new StartupScriptDAO().findAll()));
+        table.setItems(FXCollections.observableArrayList(
+            new StartupScriptDAO().findAll()));
         FXUtils.autoResizeColumns(table);
 
         return table;
     }
 
-    private static final StartupScriptController controller = new StartupScriptController();
+    private static final StartupScriptController controller =
+        new StartupScriptController();
 }

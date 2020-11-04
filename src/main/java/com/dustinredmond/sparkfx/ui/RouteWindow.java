@@ -27,7 +27,14 @@ import com.dustinredmond.sparkfx.util.FXUtils;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.SeparatorMenuItem;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
@@ -41,12 +48,13 @@ import java.util.Date;
 import java.util.Optional;
 
 /**
- * Class to represent the window used to view Routes
+ * Class to represent the window used to view Routes.
  */
-public class RouteWindow {
+public final class RouteWindow {
 
     public void show() {
-        UI.getPrimaryStage().setTitle(UI.APP_TITLE + " - Routes Overview - " + ServerContext.getDescription());
+        UI.getPrimaryStage().setTitle(UI.APP_TITLE
+            + " - Routes Overview - " + ServerContext.getDescription());
         CustomGrid grid = new CustomGrid();
         BorderPane root = new BorderPane();
         CustomMenuBar mb = new CustomMenuBar(this);
@@ -75,22 +83,31 @@ public class RouteWindow {
 
     private static final TableView<Route> table = getRoutesTable();
 
-    public TableView<Route> getTable() { return table; }
+    public TableView<Route> getTable() {
+        return table;
+    }
 
     private static TableView<Route> getRoutesTable() {
         TableView<Route> table = new TableView<>();
 
-        TableColumn<Route, Date> columnCreated = new TableColumn<>("Created");
-        columnCreated.setCellValueFactory(new PropertyValueFactory<>("created"));
+        TableColumn<Route, Date> columnCreated =
+            new TableColumn<>("Created");
+        columnCreated.setCellValueFactory(
+            new PropertyValueFactory<>("created"));
         table.getColumns().add(columnCreated);
 
-        TableColumn<Route, String> columnUrl = new TableColumn<>("URL");
-        columnUrl.setCellValueFactory(new PropertyValueFactory<>("url"));
+        TableColumn<Route, String> columnUrl =
+            new TableColumn<>("URL");
+        columnUrl.setCellValueFactory(
+            new PropertyValueFactory<>("url"));
         table.getColumns().add(columnUrl);
 
-        TableColumn<Route, Boolean> columnEnabled = new TableColumn<>("Enabled");
-        columnEnabled.setCellValueFactory(e -> new SimpleBooleanProperty(e.getValue().isEnabled()));
-        columnEnabled.setCellFactory(cell -> new CheckBoxTableCell<>());
+        TableColumn<Route, Boolean> columnEnabled =
+            new TableColumn<>("Enabled");
+        columnEnabled.setCellValueFactory(e ->
+            new SimpleBooleanProperty(e.getValue().isEnabled()));
+        columnEnabled.setCellFactory(cell ->
+            new CheckBoxTableCell<>());
         table.getColumns().add(columnEnabled);
 
         TableColumn<Route, Verb> columnVerb = new TableColumn<>("HTTP Method");
@@ -99,13 +116,17 @@ public class RouteWindow {
             if (!ServerContext.isActive()) {
                 return new SimpleObjectProperty<>(Verb.UNKN);
             }
-            Optional<RouteMatch> route = Spark.routes().stream().filter(r -> r.getMatchUri().equals(e.getValue().getUrl())).findFirst();
-            return route.map(routeMatch -> new SimpleObjectProperty<>(Verb.valueOf(routeMatch.getHttpMethod().name().toUpperCase())))
+            Optional<RouteMatch> route = Spark.routes().stream()
+                .filter(r -> r.getMatchUri().equals(e.getValue().getUrl()))
+                .findFirst();
+            return route.map(routeMatch -> new SimpleObjectProperty<>(
+                Verb.valueOf(routeMatch.getHttpMethod().name().toUpperCase())))
                     .orElse(new SimpleObjectProperty<>(Verb.UNKN));
         });
         table.getColumns().add(columnVerb);
 
-        table.setItems(FXCollections.observableArrayList(new RouteDAO().findAll()));
+        table.setItems(FXCollections.observableArrayList(
+            new RouteDAO().findAll()));
         FXUtils.autoResizeColumns(table);
         ContextMenu cm = new ContextMenu();
 
@@ -120,13 +141,15 @@ public class RouteWindow {
         MenuItem miDelete = new MenuItem("Delete Route");
         miDelete.setOnAction(e -> new RouteDeleteWindow().show(table));
 
-        cm.getItems().addAll(miBrowse, miDisable, new SeparatorMenuItem(), miAdd, miEdit, miDelete);
+        cm.getItems().addAll(miBrowse, miDisable,
+            new SeparatorMenuItem(), miAdd, miEdit, miDelete);
         table.setContextMenu(cm);
 
         table.setOnContextMenuRequested(e -> {
             if (!ServerContext.isActive()) {
-                CustomAlert.showInfo("The server is not running, please start it before making " +
-                        "changes to a route.");
+                CustomAlert.showInfo("The server is not running, "
+                    + "please start it before making "
+                    + "changes to a route.");
                 cm.hide();
             }
             if (table.getSelectionModel().isEmpty()) {
@@ -143,17 +166,24 @@ public class RouteWindow {
         });
 
         table.setOnMouseClicked(e -> {
-            if (e.getClickCount() == 2 && MouseButton.PRIMARY.equals(e.getButton())) {
+            if (e.getClickCount() == 2
+                && MouseButton.PRIMARY.equals(e.getButton())) {
                 new RouteEditWindow().show(table);
             }
         });
 
-        table.setPlaceholder(new Label("Welcome to "+UI.APP_TITLE+" click on \"Add Route\" to get started!"));
+        table.setPlaceholder(new Label(
+            "Welcome to " + UI.APP_TITLE + " click on "
+                + "\"Add Route\" to get started!"));
         return table;
     }
 
+    /**
+     * Refreshes the TableView associated with RouteWindow.
+     */
     public static void refreshTable() {
-        table.setItems(FXCollections.observableArrayList(new RouteDAO().findAll()));
+        table.setItems(FXCollections.observableArrayList(
+            new RouteDAO().findAll()));
         FXUtils.autoResizeColumns(table);
     }
 

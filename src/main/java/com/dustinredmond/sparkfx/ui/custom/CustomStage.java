@@ -29,7 +29,7 @@ public class CustomStage extends Stage {
     public CustomStage() {
         try {
             this.getIcons().add(new Image(UI.APP_ICON_URL));
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) { }
     }
 
 }

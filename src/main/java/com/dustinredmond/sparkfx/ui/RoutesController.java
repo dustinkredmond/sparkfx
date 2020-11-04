@@ -34,7 +34,7 @@ import java.net.URISyntaxException;
 import java.util.Date;
 
 /**
- * Form controller class for the following:
+ * Form controller class for the following.
  * <ul>
  *     <li>RouteWindow</li>
  *     <li>RouteAddWindow</li>
@@ -42,10 +42,12 @@ import java.util.Date;
  *     <li>RouteDeleteWindow</li>
  * </ul>
  */
-public class RoutesController {
+public final class RoutesController {
 
-    public boolean addRoute(TextField tfRoute, GroovySyntaxEditor taCode) {
-        if (tfRoute.getText().trim().isEmpty() || taCode.getText().trim().isEmpty()) {
+    public boolean addRoute(final TextField tfRoute,
+        final GroovySyntaxEditor taCode) {
+        if (tfRoute.getText().trim().isEmpty()
+            || taCode.getText().trim().isEmpty()) {
             CustomAlert.showWarning("All fields are required.");
             return false;
         }
@@ -63,7 +65,7 @@ public class RoutesController {
         return true;
     }
 
-    public void removeRoute(Route route) {
+    public void removeRoute(final Route route) {
         if (ServerContext.isActive()) {
             spark.Spark.unmap(route.getUrl());
         }
@@ -73,18 +75,23 @@ public class RoutesController {
         }
     }
 
-    private static final Logger logger = LoggerFactory.getLogger(RoutesController.class);
+    private final Logger logger = LoggerFactory
+        .getLogger(RoutesController.class);
 
-    public void disableRoute(TableView<Route> table) {
+    public void disableRoute(final TableView<Route> table) {
         if (table.getSelectionModel().isEmpty()) {
-            CustomAlert.showWarning("Please first select a route from the table.");
+            CustomAlert.showWarning(
+                "Please first select a route from the table.");
             return;
         }
         Route e = table.getSelectionModel().getSelectedItem();
-        String disabledOrEnabled = e.isEnabled() ? "enabled" : "disabled";
-        String toBe = !e.isEnabled() ? "enable" : "disable";
+        String disabledOrEnabled = e.isEnabled()
+            ? "enabled" : "disabled";
+        String toBe = !e.isEnabled()
+            ? "enable" : "disable";
 
-        String prompt = String.format("The selected route (%s) is %s, are you sure you wish to %s it?",
+        String prompt = String.format("The selected route (%s) is %s, "
+                + "are you sure you wish to %s it?",
                 e.getUrl(), disabledOrEnabled, toBe);
 
         if (CustomAlert.showConfirmation(prompt)) {
@@ -103,10 +110,11 @@ public class RoutesController {
 
     }
 
-    public void browseRoute(TableView<Route> table) {
+    public void browseRoute(final TableView<Route> table) {
         if (!ServerContext.isActive()) {
-            if (!CustomAlert.showConfirmation("The webserver has not been started, do you still wish " +
-                    "to open the route in the browser?")) {
+            if (!CustomAlert.showConfirmation("The webserver has not "
+                + "been started, do you still wish "
+                + "to open the route in the browser?")) {
                 return;
             }
         }
@@ -115,7 +123,8 @@ public class RoutesController {
         }
         Route e = table.getSelectionModel().getSelectedItem();
         try {
-            Desktop.getDesktop().browse(new URI("http://localhost:"+ ServerContext.getPort() + e.getUrl()));
+            Desktop.getDesktop().browse(new URI(
+                "http://localhost:" + ServerContext.getPort() + e.getUrl()));
         } catch (IOException | URISyntaxException ex) {
             CustomAlert.showWarning("Unable to browse to route.");
         }

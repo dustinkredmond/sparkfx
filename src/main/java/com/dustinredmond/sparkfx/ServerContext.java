@@ -24,9 +24,11 @@ import java.net.ServerSocket;
 
 /**
  * Utility class for storing the current details of the
- * server providing access to application Routes
+ * server providing access to application Routes.
  */
-public class ServerContext {
+public final class ServerContext {
+
+    private ServerContext() { super(); }
 
     private static boolean active;
     private static boolean headless;
@@ -44,12 +46,12 @@ public class ServerContext {
      * to be started.
      * @param active The server's active status
      */
-    public static void setActive(boolean active) {
+    public static void setActive(final boolean active) {
         ServerContext.active = active;
     }
 
     public static boolean isHeadless() { return ServerContext.headless; }
-    public static void setHeadless(boolean enabled) { ServerContext.headless = enabled; }
+    public static void setHeadless(final boolean enabled) { ServerContext.headless = enabled; }
 
     /**
      * Returns the preferred, or default port of the server.
@@ -60,11 +62,11 @@ public class ServerContext {
         if (appPort > 0) {
             return appPort.intValue();
         } else {
-            return 8080; // Default if not set in preferences
+            return DEFAULT_PORT;
         }
     }
 
-    public static void setPort(int appPort) {
+    public static void setPort(final int appPort) {
         Prefs.putLong("appPort", (long) appPort);
     }
 
@@ -78,11 +80,11 @@ public class ServerContext {
     }
 
     /**
-     * Returns true if the port is not in use and is available for use
+     * Returns true if the port is not in use and is available for use.
      * @param port The port to check
      * @return True if the port is available and can be bound
      */
-    public static boolean available(int port) {
+    public static boolean available(final int port) {
         try (ServerSocket ss = new ServerSocket(port); DatagramSocket ds = new DatagramSocket(port)) {
             ss.setReuseAddress(true);
             ds.setReuseAddress(true);
@@ -91,4 +93,6 @@ public class ServerContext {
           return false;
         }
     }
+
+    private static final int DEFAULT_PORT = 8080;
 }

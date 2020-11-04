@@ -28,11 +28,11 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
 
 /**
- * Custom global JavaFX MenuBar that is displayed throughout the application
+ * Custom global JavaFX MenuBar that is displayed throughout the application.
  */
-public class CustomMenuBar extends MenuBar {
+public final class CustomMenuBar extends MenuBar {
 
-    public CustomMenuBar(RouteWindow window) {
+    public CustomMenuBar(final RouteWindow window) {
 
         Menu menuFile = new Menu("File");
         MenuItem miRefresh = new MenuItem("Refresh Tables");
@@ -43,19 +43,23 @@ public class CustomMenuBar extends MenuBar {
         });
 
         MenuItem miExport = new MenuItem("Export Route...");
-        miExport.setOnAction(e -> controller.exportRoute(window.getTable()));
+        miExport.setOnAction(e ->
+            controller.exportRoute(window.getTable()));
 
         MenuItem miExportLib = new MenuItem("Export Route Library...");
-        miExportLib.setOnAction(e -> controller.exportRouteLibrary(RouteLibraryWindow.getTable()));
+        miExportLib.setOnAction(e ->
+            controller.exportRouteLibrary(RouteLibraryWindow.getTable()));
 
         MenuItem miExit = new MenuItem("Exit program");
         miExit.setOnAction(e -> Platform.exit());
-        menuFile.getItems().addAll(miRefresh, miExport, miExportLib, new SeparatorMenuItem(), miExit);
+        menuFile.getItems().addAll(
+            miRefresh, miExport, miExportLib, new SeparatorMenuItem(), miExit);
 
         Menu menuRoutes = new Menu("Routes");
         MenuItem miOverview = new MenuItem("Routes Overview");
         MenuItem miRouteLibraries = new MenuItem("Route Libraries");
-        miRouteLibraries.setOnAction(e -> new RouteLibraryWindow().show(window));
+        miRouteLibraries.setOnAction(e ->
+            new RouteLibraryWindow().show(window));
         miOverview.setOnAction(e -> window.show());
         menuRoutes.getItems().addAll(miOverview, miRouteLibraries);
 
@@ -65,9 +69,12 @@ public class CustomMenuBar extends MenuBar {
         miStartup.setOnAction(e -> new StartupScriptWindow().show(window));
         miStart.setDisable(ServerContext.isActive());
         miStop.setDisable(!ServerContext.isActive());
-        miStart.setOnAction(e -> controller.startServer(miStart, miStop));
-        miStop.setOnAction(e -> controller.stopServer(miStart, miStop));
-        menuServer.getItems().addAll(miStartup, new SeparatorMenuItem(), miStart, miStop);
+        miStart.setOnAction(e ->
+            controller.startServer(miStart, miStop));
+        miStop.setOnAction(e ->
+            controller.stopServer(miStart, miStop));
+        menuServer.getItems().addAll(
+            miStartup, new SeparatorMenuItem(), miStart, miStop);
 
 
         Menu menuOptions = new Menu("Options");
@@ -80,16 +87,18 @@ public class CustomMenuBar extends MenuBar {
         miAbout.setOnAction(e -> controller.showAbout());
         menuHelp.getItems().add(miAbout);
 
-        this.getMenus().addAll(menuFile, menuRoutes, menuServer, menuOptions, menuHelp);
+        this.getMenus().addAll(
+            menuFile, menuRoutes, menuServer, menuOptions, menuHelp);
     }
 
     private final MenuItem miStart = new MenuItem("Start Server");
     private final MenuItem miStop = new MenuItem("Stop Server");
-    private static final CustomMenuBarController controller = new CustomMenuBarController();
-    public void enableServerStartItem(boolean enable) {
+    private final CustomMenuBarController controller =
+        new CustomMenuBarController();
+    public void enableServerStartItem(final boolean enable) {
         miStart.setDisable(!enable);
     }
-    public void enableServerStopItem(boolean enable) {
+    public void enableServerStopItem(final boolean enable) {
         miStop.setDisable(!enable);
     }
 }

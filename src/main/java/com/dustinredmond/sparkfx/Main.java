@@ -25,11 +25,13 @@ import org.slf4j.LoggerFactory;
 import static spark.Spark.port;
 
 /**
- * Application entry point
+ * Application entry point.
  */
-public class Main {
+public final class Main {
 
-    public static void main(String[] args) {
+    private Main() { super(); }
+
+    public static void main(final String[] args) {
         parseArgs(args);
 
         // Make sure to set for each Thread in our application
@@ -53,7 +55,7 @@ public class Main {
         }
     }
 
-    private static void parseArgs(String[] args) {
+    private static void parseArgs(final String[] args) {
         try {
             for (int i = 0; i < args.length; i++) {
                 if (args[i].equals("--headless")) {

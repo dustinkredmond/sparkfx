@@ -21,7 +21,10 @@ import com.dustinredmond.sparkfx.ui.custom.CustomAlert;
 import com.dustinredmond.sparkfx.ui.custom.CustomGrid;
 import com.dustinredmond.sparkfx.ui.custom.CustomMenuBar;
 import com.dustinredmond.sparkfx.util.Prefs;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -35,10 +38,11 @@ import java.util.Optional;
 /**
  * Class representing the window used to change application preferences.
  */
-public class PreferencesWindow {
+public final class PreferencesWindow {
 
-    public void show(RouteWindow window) {
-        UI.getPrimaryStage().setTitle(UI.APP_TITLE + " - Preferences" + " - " + ServerContext.getDescription());
+    public void show(final RouteWindow window) {
+        UI.getPrimaryStage().setTitle(UI.APP_TITLE + " - Preferences"
+            + " - " + ServerContext.getDescription());
         BorderPane root = new BorderPane();
         CustomGrid grid = new CustomGrid();
         root.setCenter(grid);
@@ -54,13 +58,15 @@ public class PreferencesWindow {
         Button buttonReset = new Button("Reset to Default");
         grid.add(buttonReset, 3, 0);
 
-        String prompt = "Changing the SQLite Database path requires application restart, continue?";
+        String prompt = "Changing the SQLite Database path"
+            + " requires application restart, continue?";
         buttonOverride.setOnAction(e -> {
             if (!CustomAlert.showConfirmation(prompt)) {
                 return;
             }
             FileChooser fc = new FileChooser();
-            fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("SQLite Database", "*.db"));
+            fc.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("SQLite Database", "*.db"));
             File file = fc.showSaveDialog(grid.getScene().getWindow());
             if (file != null) {
                 Prefs.put("dbPath", file.getAbsolutePath());
@@ -80,7 +86,8 @@ public class PreferencesWindow {
         });
 
 
-        String defaultPort = Prefs.getLong("appPort") > 0 ? Prefs.getLong("appPort").toString() : "8080";
+        String defaultPort = Prefs.getLong("appPort") > 0
+            ? Prefs.getLong("appPort").toString() : "8080";
         grid.add(new Label("Application Port:"), 0, 1);
         TextField taPort = new TextField(defaultPort);
         taPort.setEditable(false);
@@ -91,7 +98,8 @@ public class PreferencesWindow {
         tid.setHeaderText("");
         tid.setTitle(UI.APP_TITLE);
         tid.setContentText("Enter a new port number.");
-        ((Stage) tid.getDialogPane().getScene().getWindow()).getIcons().add(new Image(UI.APP_ICON_URL));
+        ((Stage) tid.getDialogPane().getScene().getWindow())
+            .getIcons().add(new Image(UI.APP_ICON_URL));
         tid.setGraphic(new ImageView(UI.APP_ICON_URL));
         tid.getEditor().textProperty().addListener((ov, old, newVal) -> {
             if (!newVal.matches("\\d+") && !newVal.isEmpty()) {
@@ -103,7 +111,9 @@ public class PreferencesWindow {
         buttonOverridePort.setOnAction(e -> {
             Optional<String> port = tid.showAndWait();
             port.ifPresent(s -> Prefs.putLong("appPort", Long.parseLong(s)));
-            CustomAlert.showInfo("The application will now exit. Please restart the application.");
+            CustomAlert.showInfo(
+                "The application will now exit. "
+                    + "Please restart the application.");
             System.exit(0);
         });
 

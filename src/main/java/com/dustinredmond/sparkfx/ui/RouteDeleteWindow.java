@@ -24,11 +24,13 @@ import javafx.scene.control.TableView;
 /**
  * Class representing the window used to delete Route objects.
  */
-public class RouteDeleteWindow {
+public final class RouteDeleteWindow {
 
-    public void show(TableView<Route> table) {
+    public void show(final TableView<Route> table) {
         if (!ServerContext.isActive()) {
-            CustomAlert.showInfo("The server is not running, please start it before adding/modifying routes");
+            CustomAlert.showInfo(
+                "The server is not running, "
+                    + "please start it before adding/modifying routes");
             return;
         }
         if (table.getSelectionModel().isEmpty()) {
@@ -37,12 +39,13 @@ public class RouteDeleteWindow {
         }
 
         Route e = table.getSelectionModel().getSelectedItem();
-        final String prompt = String.format("Are you sure you wish to remove route: %s", e.getUrl());
+        final String prompt = String.format(
+            "Are you sure you wish to remove route: %s", e.getUrl());
         if (CustomAlert.showConfirmation(prompt)) {
             controller.removeRoute(e);
             RouteWindow.refreshTable();
         }
     }
 
-    private static final RoutesController controller = new RoutesController();
+    private final RoutesController controller = new RoutesController();
 }

@@ -37,10 +37,11 @@ import java.util.Optional;
  * Methods in this class must be called from the JavaFX
  * Application thread, or wrapped in a call to {@code Platform.runLater()}
  */
-public class CustomAlert {
+public final class CustomAlert {
 
-    private static String iconPath;
-    private static String applicationTitle = "";
+    private CustomAlert() {
+        super();
+    }
 
     /**
      * Displays a JavaFX (INFORMATION) Alert with custom title bar icon.
@@ -48,7 +49,7 @@ public class CustomAlert {
      * @param header  Dialog header text.
      * @param content Dialog message text.
      */
-    public static void showInfo(String header, String content) {
+    public static void showInfo(final String header, final String content) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         addDialogIconTo(alert, true);
         alert.setTitle(applicationTitle);
@@ -64,7 +65,7 @@ public class CustomAlert {
      *
      * @param contentText Dialog message text.
      */
-    public static void showInfo(String contentText) {
+    public static void showInfo(final String contentText) {
         showInfo("", contentText);
     }
 
@@ -74,7 +75,7 @@ public class CustomAlert {
      * @param header  Dialog header text.
      * @param content Dialog message text.
      */
-    public static void showWarning(String header, String content) {
+    public static void showWarning(final String header, final String content) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         addDialogIconTo(alert, false);
         alert.setTitle(applicationTitle);
@@ -90,7 +91,7 @@ public class CustomAlert {
      *
      * @param contentText Dialog message text.
      */
-    public static void showWarning(String contentText) {
+    public static void showWarning(final String contentText) {
         showWarning("", contentText);
     }
 
@@ -102,7 +103,8 @@ public class CustomAlert {
      * @param contentText JavaFX Alert's Content Text.
      * @return true if user presses OK.
      */
-    public static Boolean showConfirmation(String headerText, String contentText) {
+    public static Boolean showConfirmation(final String headerText,
+        final String contentText) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         addDialogIconTo(alert, true);
         alert.setTitle(applicationTitle);
@@ -123,7 +125,7 @@ public class CustomAlert {
      * @param contentText JavaFX Alert's Content Text.
      * @return true if user presses OK.
      */
-    public static Boolean showConfirmation(String contentText) {
+    public static Boolean showConfirmation(final String contentText) {
         return showConfirmation("", contentText);
     }
 
@@ -132,7 +134,7 @@ public class CustomAlert {
      *
      * @param e Exception whose stack trace to show.
      */
-    public static void showExceptionDialog(Throwable e) {
+    public static void showExceptionDialog(final Throwable e) {
         showExceptionDialog(e, "");
     }
 
@@ -142,12 +144,15 @@ public class CustomAlert {
      * @param e       Exception whose stack trace to show.
      * @param message Dialog message content.
      */
-    public static void showExceptionDialog(Throwable e, String message) {
+    public static void showExceptionDialog(final Throwable e,
+        final String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         addDialogIconTo(alert, false);
         alert.setTitle(applicationTitle);
         alert.setHeaderText("Exception Occurred");
-        alert.getDialogPane().setContent(new Label(message.isEmpty() ? "An unknown error occurred.\n" + e.getMessage() : message));
+        alert.getDialogPane().setContent(
+            new Label(message.isEmpty()
+                ? "An unknown error occurred.\n" + e.getMessage() : message));
         alert.setResizable(true);
 
         StringWriter sw = new StringWriter();
@@ -176,22 +181,27 @@ public class CustomAlert {
     }
 
     /**
-     * Adds a custom icon to a JavaFX Alert. Passing true as the second parameter
+     * Adds a custom icon to a JavaFX Alert.
+     * Passing true as the second parameter
      * will also add the icon as the Alert's header graphic.
      *
-     * @param alert                  JavaFX alert whose icon should be customized.
-     * @param addCustomHeaderGraphic Pass true to modify the header graphic as well.
+     * @param alert JavaFX alert whose icon should be customized.
+     * @param addCustomHeaderGraphic Pass true to modify the
+     *                               header graphic as well.
      */
-    private static void addDialogIconTo(Alert alert, boolean addCustomHeaderGraphic) {
+    private static void addDialogIconTo(final Alert alert,
+        final boolean addCustomHeaderGraphic) {
         if (iconPath != null && !iconPath.isEmpty()) {
             final Image appIcon = new Image(iconPath);
-            Stage dialogStage = (Stage) alert.getDialogPane().getScene().getWindow();
+            Stage dialogStage = (Stage) alert
+                .getDialogPane().getScene().getWindow();
             dialogStage.getIcons().add(appIcon);
 
             if (addCustomHeaderGraphic) {
                 final ImageView headerIcon = new ImageView(iconPath);
-                headerIcon.setFitHeight(48); // Set size to JavaFX API recommendation.
-                headerIcon.setFitWidth(48);
+                // Set size to JavaFX API recommendation.
+                headerIcon.setFitHeight(DEFAULT_ICON_HEIGHT);
+                headerIcon.setFitWidth(DEFAULT_ICON_WIDTH);
                 alert.getDialogPane().setGraphic(headerIcon);
             }
         }
@@ -203,14 +213,38 @@ public class CustomAlert {
      *
      * @param icon Path to custom icon.
      */
-    public static void setIconPath(String icon) {
+    public static void setIconPath(final String icon) {
         iconPath = icon;
     }
 
     /**
      * Sets the application's title. This will be used in cases where a
      * title is not provided as part of the CustomAlert's .show methods.
-     * @param appTitle The CustomAlert's intended title bar text if not otherwise specified
+     * @param appTitle The CustomAlert's intended
+     *                title bar text if not otherwise specified
      */
-    public static void setApplicationTitle(String appTitle) { applicationTitle = appTitle;}
+    public static void setApplicationTitle(final String appTitle) {
+        applicationTitle = appTitle;
+    }
+
+
+    /**
+     * Icon height when using custom icons.
+     */
+    private static final int DEFAULT_ICON_HEIGHT = 48;
+
+    /**
+     * Icon width when using custom icons.
+     */
+    private static final int DEFAULT_ICON_WIDTH = 48;
+
+    /**
+     * Path to the application's icon.
+     */
+    private static String iconPath;
+
+    /**
+     * Application's title, empty by default.
+     */
+    private static String applicationTitle = "";
 }

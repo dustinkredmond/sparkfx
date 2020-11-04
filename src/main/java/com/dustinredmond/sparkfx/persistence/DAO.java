@@ -20,7 +20,7 @@ import java.util.List;
 
 /**
  * An interface indicating that a Class is used for retrieving
- * and manipulating data from the SQLite database
+ * and manipulating data from the SQLite database.
  * @param <T>
  */
 public interface DAO<T> {

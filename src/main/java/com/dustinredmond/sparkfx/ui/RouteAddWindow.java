@@ -22,18 +22,22 @@ import com.dustinredmond.sparkfx.ui.custom.CustomGrid;
 import com.dustinredmond.sparkfx.ui.custom.CustomStage;
 import com.dustinredmond.sparkfx.ui.custom.GroovySyntaxEditor;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 
 /**
- * Class representing the window used to add Route objects
+ * Class representing the window used to add Route objects.
  */
-public class RouteAddWindow {
+public final class RouteAddWindow {
 
     public void show() {
         if (!ServerContext.isActive()) {
-            CustomAlert.showInfo("The server is not running, please start it before adding/modifying routes");
+            CustomAlert.showInfo(
+                "The server is not running, "
+                    + "please start it before adding/modifying routes");
             return;
         }
         CustomStage stage = new CustomStage();
@@ -63,11 +67,12 @@ public class RouteAddWindow {
         buttonAdd.setDisable(true);
         tfRoute.textProperty().addListener(e -> {
             taCode.setDisable(tfRoute.getText().isEmpty());
-            buttonAdd.setDisable(taCode.getText().trim().isEmpty() || tfRoute.getText().trim().isEmpty());
+            buttonAdd.setDisable(taCode.getText().trim().isEmpty()
+                || tfRoute.getText().trim().isEmpty());
         });
         buttonAdd.setMinWidth(120);
         buttonAdd.setOnAction(e -> {
-            if (controller.addRoute(tfRoute,taCode)) {
+            if (controller.addRoute(tfRoute, taCode)) {
                 taCode.dispose();
                 stage.hide();
                 RouteWindow.refreshTable();
@@ -79,13 +84,14 @@ public class RouteAddWindow {
         stage.show();
     }
 
-    private static final RoutesController controller = new RoutesController();
-    private String getPromptText(String route) {
-        return  "get(\""+route+"\", (req,res) -> {\n" +
-                "\t// Read the documentation at https://sparkjava.com/ \n" +
-                "\t// You can get a RouteLibrary like so: def myLibrary = getLibrary(\"MyLibraryName\");\n" +
-                "\tres.body(\"Hello, World!\");\n" +
-                "\treturn res.body();\n" +
-                "});";
+    private final RoutesController controller = new RoutesController();
+    private String getPromptText(final String route) {
+        return  "get(\"" + route + "\", (req,res) -> {\n"
+            + "\t// Read the documentation at https://sparkjava.com/ \n"
+            + "\t// You can get a RouteLibrary like so: def myLibrary"
+            + " = getLibrary(\"MyLibraryName\");\n"
+            + "\tres.body(\"Hello, World!\");\n"
+            + "\treturn res.body();\n"
+            + "});";
     }
 }

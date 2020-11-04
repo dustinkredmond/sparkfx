@@ -23,28 +23,34 @@ import com.dustinredmond.sparkfx.ui.custom.CustomGrid;
 import com.dustinredmond.sparkfx.ui.custom.CustomStage;
 import com.dustinredmond.sparkfx.ui.custom.GroovySyntaxEditor;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 
 /**
- * Class representing the window used to delete Route objects
+ * Class representing the window used to delete Route objects.
  */
-public class RouteEditWindow {
+public final class RouteEditWindow {
 
-    public void show(TableView<Route> table) {
+    public void show(final TableView<Route> table) {
         if (!ServerContext.isActive()) {
-            CustomAlert.showInfo("The server is not running, please start it before adding/modifying routes");
+            CustomAlert.showInfo(
+                "The server is not running, "
+                    + "please start it before adding/modifying routes");
             return;
         }
         if (table.getSelectionModel().isEmpty()) {
-            CustomAlert.showWarning("Please first select a route from the table.");
+            CustomAlert.showWarning(
+                "Please first select a route from the table.");
         } else {
             showEditDialog(table);
         }
     }
 
-    private void showEditDialog(TableView<Route> table) {
+    private void showEditDialog(final TableView<Route> table) {
         final Route route = table.getSelectionModel().getSelectedItem();
         CustomStage stage = new CustomStage();
         stage.setTitle("Edit Route");
@@ -83,7 +89,9 @@ public class RouteEditWindow {
         stage.show();
     }
 
-    private static final RoutesController controller = new RoutesController();
-    private static final String REMOVE_PROMPT = "In order to modify the route, the current route will have to first be " +
-            "removed. Ensure that no users are using the currently mapped route. Are you sure you wish to continue?";
+    private final RoutesController controller = new RoutesController();
+    private static final String REMOVE_PROMPT =
+        "In order to modify the route, the current route will have to "
+            + "first be removed. Ensure that no users are using the currently "
+            + "mapped route. Are you sure you wish to continue?";
 }

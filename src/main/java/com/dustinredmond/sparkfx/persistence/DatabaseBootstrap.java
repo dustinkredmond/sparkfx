@@ -28,7 +28,8 @@ import java.sql.SQLException;
  * is responsible for creating the necessary application
  * database tables for the specified SQLite database.
  */
-public class DatabaseBootstrap implements Runnable {
+@SuppressWarnings("SqlNoDataSourceInspection")
+public final class DatabaseBootstrap implements Runnable {
 
     @Override
     public void run() {
@@ -37,42 +38,55 @@ public class DatabaseBootstrap implements Runnable {
 
     private void createTablesIfNotExists() {
         try (Connection conn = new ConnectionFactory().connect();
-             PreparedStatement ps = conn.prepareStatement(sqlRouteCreate);
-             PreparedStatement ps2 = conn.prepareStatement(sqlGroovyCreate);
-             PreparedStatement ps3 = conn.prepareStatement(sqlStartupCreate)) {
+             PreparedStatement ps = conn
+                 .prepareStatement(SQL_ROUTE_CREATE);
+             PreparedStatement ps2 = conn
+                 .prepareStatement(SQL_GROOVY_CREATE);
+             PreparedStatement ps3 = conn
+                 .prepareStatement(SQL_STARTUP_CREATE)) {
             ps.executeUpdate();
             ps2.executeUpdate();
             ps3.executeUpdate();
         } catch (SQLException e) {
             Platform.runLater(() ->
-                    CustomAlert.showExceptionDialog(e, "Database bootstrapping failed."));
+                CustomAlert.showExceptionDialog(e,
+                    "Database bootstrapping failed."));
         }
     }
 
-    private static final String sqlRouteCreate = "" +
-            "CREATE TABLE IF NOT EXISTS ROUTE(" +
-                "ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
-                "URL VARCHAR(255) NOT NULL," +
-                "CODE LONGTEXT NOT NULL," +
-                "CREATED DATE NOT NULL," +
-                "ENABLED BOOLEAN NOT NULL" +
-            ");";
+    /**
+     * SQL to create the ROUTE table.
+     */
+    private static final String SQL_ROUTE_CREATE =
+            "CREATE TABLE IF NOT EXISTS ROUTE("
+               + "ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
+               + "URL VARCHAR(255) NOT NULL,"
+               + "CODE LONGTEXT NOT NULL,"
+               + "CREATED DATE NOT NULL,"
+               + "ENABLED BOOLEAN NOT NULL"
+           + ");";
 
-    private static final String sqlGroovyCreate = "" +
-            "CREATE TABLE IF NOT EXISTS GROOVY(" +
-                "ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
-                "CLASS_NAME VARCHAR(255) NOT NULL," +
-                "CODE LONGTEXT NOT NULL," +
-                "CREATED DATE NOT NULL," +
-                "MODIFIED DATE NULL," +
-                "ENABLED BOOLEAN NOT NULL" +
-            ");";
+    /**
+     * SQL to create the GROOVY table.
+     */
+    private static final String SQL_GROOVY_CREATE =
+            "CREATE TABLE IF NOT EXISTS GROOVY("
+               + "ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
+               + "CLASS_NAME VARCHAR(255) NOT NULL,"
+               + "CODE LONGTEXT NOT NULL,"
+               + "CREATED DATE NOT NULL,"
+               + "MODIFIED DATE NULL,"
+               + "ENABLED BOOLEAN NOT NULL"
+           + ");";
 
-    private static final String sqlStartupCreate = "" +
-            "CREATE TABLE IF NOT EXISTS STARTUP_SCRIPT(" +
-                "ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
-                "DESCRIPTION VARCHAR(255) NOT NULL," +
-                "CODE LONGTEXT NOT NULL," +
-                "ENABLED BOOLEAN NOT NULL" +
-            ");";
+    /**
+     * SQL to create the STARTUP_SCRIPT table.
+     */
+    private static final String SQL_STARTUP_CREATE =
+            "CREATE TABLE IF NOT EXISTS STARTUP_SCRIPT("
+               + "ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
+               + "DESCRIPTION VARCHAR(255) NOT NULL,"
+               + "CODE LONGTEXT NOT NULL,"
+               + "ENABLED BOOLEAN NOT NULL"
+           + ");";
 }

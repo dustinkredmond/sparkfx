@@ -48,27 +48,29 @@ import java.util.function.Consumer;
 public abstract class SparkScript extends Script {
 
     /**
-     * Gets a RouteLibrary, can be called and used from Groovy code
+     * Gets a RouteLibrary, can be called and used from Groovy code.
      * @param className RouteLibrary to get
      * @return RouteLibrary if it exists, and is enabled, otherwise null.
      */
-    public Object getLibrary(String className) {
+    public Object getLibrary(final String className) {
         RouteLibrary library = new RouteLibraryDAO().findByClassName(className);
         if (library == null) {
             return null;
         }
         if (!library.isEnabled()) {
-            throw new RuntimeException(String.format("Library %s is currently " +
-                    "not enabled. This library may not be used until it is " +
-                    "enabled.", className));
+            throw new RuntimeException(String.format("Library %s is currently"
+                    + " not enabled. This library may not be used until it is "
+                    + "enabled.", className));
         }
         try {
-            return ((Class<?>) new GroovyClassLoader().parseClass(library.getCode()))
-                    .getDeclaredConstructor().newInstance();
+            return ((Class<?>) new GroovyClassLoader()
+                .parseClass(library.getCode()))
+                .getDeclaredConstructor().newInstance();
         } catch (InstantiationException | NoSuchMethodException
                 | InvocationTargetException | IllegalAccessException e) {
             throw new RuntimeException(
-                    String.format("Could not load library (%s), ensure the class has a public no-argument constructor.",
+                    String.format("Could not load library (%s), ensure the "
+                            + "class has a public no-argument constructor.",
                     library.getClassName()), e
             );
         }

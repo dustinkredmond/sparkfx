@@ -19,21 +19,22 @@ package com.dustinredmond.sparkfx.model;
 import java.util.Date;
 
 /**
- * Represents an API endpoint or Spark Route
+ * Represents an API endpoint or Spark Route.
  */
-public class Route {
+public final class Route {
 
     private long id;
     private Date created;
     private String url;
     private String code;
-    boolean enabled;
+    private boolean enabled;
 
     public Route() {
         super();
     }
 
-    public Route(long id, String url, String code, Date created, boolean enabled) {
+    public Route(final long id, final String url, final String code,
+        final Date created, final boolean enabled) {
         this.id = id;
         this.url = url;
         this.code = code;
@@ -45,7 +46,7 @@ public class Route {
         return url;
     }
 
-    public void setUrl(String url) {
+    public void setUrl(final String url) {
         this.url = url;
     }
 
@@ -53,7 +54,7 @@ public class Route {
         return code;
     }
 
-    public void setCode(String code) {
+    public void setCode(final String code) {
         this.code = code;
     }
 
@@ -61,15 +62,15 @@ public class Route {
         return created;
     }
 
-    public void setCreated(Date created) {
+    public void setCreated(final Date created) {
         this.created = created;
     }
 
     public long getId() {
-        return id;
+        return this.id;
     }
 
-    public void setId(long id) {
+    public void setId(final long id) {
         this.id = id;
     }
 
@@ -77,7 +78,7 @@ public class Route {
         return enabled;
     }
 
-    public void setEnabled(boolean enabled) {
+    public void setEnabled(final boolean enabled) {
         this.enabled = enabled;
     }
 }

@@ -20,21 +20,23 @@ package com.dustinredmond.sparkfx.model;
  * Represents a script that can be executed during server startup
  * or run on demand.
  */
-public class StartupScript {
+public final class StartupScript {
 
     private long id;
     private String description;
     private String code;
     private boolean enabled;
 
-    public StartupScript(long id, String description, String code, boolean enabled) {
+    public StartupScript(final long id, final String description,
+        final String code, final boolean enabled) {
         this.id = id;
         this.description = description;
         this.code = code;
         this.enabled = enabled;
     }
 
-    public StartupScript(String description, String code, boolean enabled) {
+    public StartupScript(final String description, final String code,
+        final boolean enabled) {
         this.description = description;
         this.code = code;
         this.enabled = enabled;
@@ -44,7 +46,7 @@ public class StartupScript {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(final long id) {
         this.id = id;
     }
 
@@ -52,7 +54,7 @@ public class StartupScript {
         return code;
     }
 
-    public void setCode(String code) {
+    public void setCode(final String code) {
         this.code = code;
     }
 
@@ -60,7 +62,7 @@ public class StartupScript {
         return enabled;
     }
 
-    public void setEnabled(boolean enabled) {
+    public void setEnabled(final boolean enabled) {
         this.enabled = enabled;
     }
 
@@ -68,7 +70,7 @@ public class StartupScript {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(final String description) {
         this.description = description;
     }
 }

@@ -3,9 +3,13 @@ package com.dustinredmond.sparkfx.util;
 import javafx.scene.control.TableView;
 import javafx.scene.text.Text;
 
-public class FXUtils {
+public final class FXUtils {
+    private FXUtils() {
+        super();
+    }
 
-    public static void autoResizeColumns(TableView<?> table, double padding) {
+    public static void autoResizeColumns(
+        final TableView<?> table, final double padding) {
         table.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
         table.getColumns().forEach(column -> {
             Text t = new Text(column.getText());
@@ -23,7 +27,9 @@ public class FXUtils {
         });
     }
 
-    public static void autoResizeColumns(TableView<?> table) {
-        autoResizeColumns(table, 25);
+    public static void autoResizeColumns(final TableView<?> table) {
+        autoResizeColumns(table, DEFAULT_PADDING);
     }
+
+    private static final int DEFAULT_PADDING = 25;
 }

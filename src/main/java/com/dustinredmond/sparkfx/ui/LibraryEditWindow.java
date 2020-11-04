@@ -29,11 +29,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 
-public class LibraryEditWindow {
+public final class LibraryEditWindow {
     public void show() {
         TableView<RouteLibrary> table = RouteLibraryWindow.getTable();
         if (table.getSelectionModel().isEmpty()) {
-            CustomAlert.showWarning("Please first select an item from the table.");
+            CustomAlert.showWarning(
+                "Please first select an item from the table.");
             return;
         }
 
@@ -57,7 +58,10 @@ public class LibraryEditWindow {
         buttonAdd.setMinWidth(120);
         grid.add(buttonAdd, 0, 2);
         buttonAdd.setOnAction(e -> {
-            if (controller.editLibrary(lib, tfClassName.getText(), se.getText())) {
+            if (controller.editLibrary(lib,
+                tfClassName.getText(),
+                se.getText())) {
+
                 se.dispose();
                 stage.hide();
             }
@@ -68,5 +72,6 @@ public class LibraryEditWindow {
         stage.show();
     }
 
-    private static final RouteLibraryController controller = new RouteLibraryController();
+    private final RouteLibraryController controller =
+        new RouteLibraryController();
 }

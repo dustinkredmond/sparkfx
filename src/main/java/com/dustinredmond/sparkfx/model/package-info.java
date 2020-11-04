@@ -1,5 +1,3 @@
-package com.dustinredmond.sparkfx.model;
-
 /*
  *  Copyright 2020  Dustin K. Redmond
  *
@@ -16,30 +14,8 @@ package com.dustinredmond.sparkfx.model;
  *  limitations under the License.
  */
 
-import com.dustinredmond.sparkfx.ServerContext;
-
 /**
- * Represents an HTTP method.
+ * Contains domain objects. These are generally, but not necessarily
+ * database entities.
  */
-public enum Verb {
-    POST,
-    GET,
-    PUT,
-    PATCH,
-    DELETE,
-    PATH,
-    HEAD,
-    TRACE,
-    CONNECT,
-    OPTIONS,
-    UNKN;
-
-    @Override
-    public String toString() {
-        if (super.toString().equals("UNKN")) {
-            return ServerContext.isActive()
-                ? "Unknown" : "Unknown - Server Offline";
-        }
-        return super.toString();
-    }
-}
+package com.dustinredmond.sparkfx.model;

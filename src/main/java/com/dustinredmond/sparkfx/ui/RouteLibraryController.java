@@ -26,7 +26,7 @@ import java.util.Date;
 import java.util.StringJoiner;
 
 /**
- * Form controller class for the following windows
+ * Form controller class for the following windows.
  * <ul>
  *     <li>RouteLibraryWindow</li>
  *     <li>LibraryAddWindow</li>
@@ -34,17 +34,19 @@ import java.util.StringJoiner;
  *     <li>LibraryDeleteWindow</li>
  * </ul>
  */
-public class RouteLibraryController {
+public final class RouteLibraryController {
 
     public void enableDisableLibrary() {
         TableView<RouteLibrary> table = RouteLibraryWindow.getTable();
         if (table.getSelectionModel().isEmpty()) {
-            CustomAlert.showWarning("Please first select a library from the table.");
+            CustomAlert.showWarning(
+                "Please first select a library from the table.");
             return;
         }
 
         RouteLibrary lib = table.getSelectionModel().getSelectedItem();
-        String prompt = String.format("Class %s is currently %s, are you sure you wish to %s it?",
+        String prompt = String.format(
+            "Class %s is currently %s, are you sure you wish to %s it?",
                 lib.getClassName(),
                 lib.isEnabled() ? "enabled" : "disabled",
                 lib.isEnabled() ? "disable" : "enable");
@@ -56,10 +58,11 @@ public class RouteLibraryController {
         RouteLibraryWindow.refreshTableView();
     }
 
-    public boolean addLibrary(String className, String code) {
-        if (className == null || code == null ||
-                className.trim().isEmpty() || code.trim().isEmpty()) {
-            CustomAlert.showWarning("Both Class Name and Code are required.");
+    public boolean addLibrary(final String className, final String code) {
+        if (className == null || code == null
+            || className.trim().isEmpty() || code.trim().isEmpty()) {
+            CustomAlert.showWarning(
+                "Both Class Name and Code are required.");
             return false;
         }
         RouteLibrary lib = new RouteLibrary();
@@ -75,9 +78,10 @@ public class RouteLibraryController {
         return false;
     }
 
-    public boolean editLibrary(RouteLibrary lib, String className, String code) {
-        if (className == null || code == null ||
-            className.trim().isEmpty() || code.trim().isEmpty()) {
+    public boolean editLibrary(final RouteLibrary lib,
+        final String className, final String code) {
+        if (className == null || code == null
+            || className.trim().isEmpty() || code.trim().isEmpty()) {
             CustomAlert.showWarning("Class Name and code are both required.");
             return false;
         }
@@ -92,11 +96,12 @@ public class RouteLibraryController {
         }
     }
 
-    public String getAssociatedRoutes(RouteLibrary lib) {
+    public String getAssociatedRoutes(final RouteLibrary lib) {
         StringJoiner sb = new StringJoiner("\n");
         new RouteDAO().findAll().forEach(e -> {
-            if (e.getCode().contains("getLibrary(\""+lib.getClassName()+"\")")) {
-                sb.add("\t- "+e.getUrl());
+            if (e.getCode()
+                .contains("getLibrary(\"" + lib.getClassName() + "\")")) {
+                sb.add("\t- " + e.getUrl());
             }
         });
         return sb.toString();

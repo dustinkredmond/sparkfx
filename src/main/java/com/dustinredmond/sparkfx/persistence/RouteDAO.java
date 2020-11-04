@@ -29,15 +29,18 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RouteDAO implements DAO<Route> {
+@SuppressWarnings({"SqlResolve", "SqlNoDataSourceInspection"})
+public final class RouteDAO implements DAO<Route> {
 
     @Override
     public List<Route> findAll() {
 
         List<Route> routes = new ArrayList<>();
-        final String sql = "SELECT ID, URL, CODE, CREATED, ENABLED FROM ROUTE E";
+        final String sql = "SELECT ID, URL, CODE, CREATED, ENABLED"
+            + " FROM ROUTE E";
 
-        try (Connection conn = new ConnectionFactory().connect(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = new ConnectionFactory().connect();
+            PreparedStatement ps = conn.prepareStatement(sql)) {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 routes.add(new Route(rs.getLong("ID"),
@@ -57,10 +60,12 @@ public class RouteDAO implements DAO<Route> {
     }
 
     @Override
-    public boolean create(Route route) {
-        final String sql = "INSERT INTO ROUTE (URL,CODE,CREATED,ENABLED) VALUES (?,?,?,?);";
+    public boolean create(final Route route) {
+        final String sql = "INSERT INTO ROUTE (URL,CODE,CREATED,ENABLED)"
+            + "VALUES (?,?,?,?);";
 
-        try (Connection conn = new ConnectionFactory().connect(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = new ConnectionFactory().connect();
+            PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, route.getUrl());
             ps.setString(2, route.getCode());
             ps.setDate(3, java.sql.Date.valueOf(LocalDate.now()));
@@ -74,9 +79,10 @@ public class RouteDAO implements DAO<Route> {
     }
 
     @Override
-    public boolean remove(Route route) {
+    public boolean remove(final Route route) {
         final String sql = "DELETE FROM ROUTE WHERE ID = ?";
-        try (Connection conn = new ConnectionFactory().connect(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = new ConnectionFactory().connect();
+            PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setLong(1, route.getId());
             ps.executeUpdate();
             return true;
@@ -87,9 +93,11 @@ public class RouteDAO implements DAO<Route> {
     }
 
     @Override
-    public boolean update(Route e) {
-        final String sql = "UPDATE ROUTE SET URL = ?, CODE = ?, ENABLED = ? WHERE ID = ?";
-        try (Connection conn = new ConnectionFactory().connect(); PreparedStatement ps = conn.prepareStatement(sql)) {
+    public boolean update(final Route e) {
+        final String sql = "UPDATE ROUTE SET URL = ?, CODE = ?, ENABLED = ?"
+            + "WHERE ID = ?";
+        try (Connection conn = new ConnectionFactory().connect();
+            PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, e.getUrl());
             ps.setString(2, e.getCode());
             ps.setBoolean(3, e.isEnabled());

@@ -22,18 +22,23 @@ import com.dustinredmond.sparkfx.ui.custom.CustomGrid;
 import com.dustinredmond.sparkfx.ui.custom.CustomStage;
 import com.dustinredmond.sparkfx.ui.custom.GroovySyntaxEditor;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 
 /**
- * Class to represent the window used to edit StartupScripts
+ * Class to represent the window used to edit StartupScripts.
  */
-public class StartupScriptEditWindow {
+public final class StartupScriptEditWindow {
 
     public void show() {
         if (table.getSelectionModel().isEmpty()) {
-            CustomAlert.showWarning("Please select a script from the table first.");
+            CustomAlert.showWarning(
+                "Please select a script from the table first.");
             return;
         }
 
@@ -61,7 +66,11 @@ public class StartupScriptEditWindow {
 
         Button buttonAdd = new Button("Save Changes");
         buttonAdd.setOnAction(e -> {
-            if (controller.editStartupScript(script, tfDescription.getText(), gse.getText(), cbEnabled.isSelected())) {
+            if (controller.editStartupScript(script,
+                tfDescription.getText(),
+                gse.getText(),
+                cbEnabled.isSelected())) {
+
                 gse.dispose();
                 stage.hide();
                 StartupScriptWindow.refreshTable();
@@ -74,6 +83,8 @@ public class StartupScriptEditWindow {
         stage.show();
     }
 
-    private static final StartupScriptController controller = new StartupScriptController();
-    private final TableView<StartupScript> table = StartupScriptWindow.getTable();
+    private static final StartupScriptController controller =
+        new StartupScriptController();
+    private final TableView<StartupScript> table =
+        StartupScriptWindow.getTable();
 }

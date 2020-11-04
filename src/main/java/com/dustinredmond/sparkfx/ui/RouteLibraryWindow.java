@@ -24,7 +24,14 @@ import com.dustinredmond.sparkfx.ui.custom.CustomMenuBar;
 import com.dustinredmond.sparkfx.util.FXUtils;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.SeparatorMenuItem;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
@@ -35,14 +42,15 @@ import javafx.scene.layout.Priority;
 import java.util.Date;
 
 /**
- * Class representing the window used to display RouteLibraries
+ * Class representing the window used to display RouteLibraries.
  */
-public class RouteLibraryWindow {
+public final class RouteLibraryWindow {
 
-    public void show(RouteWindow parentWindow) {
+    public void show(final RouteWindow parentWindow) {
         BorderPane root = new BorderPane();
         UI.getPrimaryStage().getScene().setRoot(root);
-        UI.getPrimaryStage().setTitle(UI.APP_TITLE + " - Route Libraries - " + ServerContext.getDescription());
+        UI.getPrimaryStage().setTitle(UI.APP_TITLE
+            + " - Route Libraries - " + ServerContext.getDescription());
         CustomGrid grid = new CustomGrid();
         root.setCenter(grid);
         root.setTop(new CustomMenuBar(parentWindow));
@@ -65,25 +73,35 @@ public class RouteLibraryWindow {
     private static TableView<RouteLibrary> getTableView() {
         TableView<RouteLibrary> table = new TableView<>();
 
-        TableColumn<RouteLibrary, String> columnClassName = new TableColumn<>("Class Name");
-        columnClassName.setCellValueFactory(new PropertyValueFactory<>("className"));
+        TableColumn<RouteLibrary, String> columnClassName =
+            new TableColumn<>("Class Name");
+        columnClassName.setCellValueFactory(
+            new PropertyValueFactory<>("className"));
         table.getColumns().add(columnClassName);
 
-        TableColumn<RouteLibrary, Date> columnCreated = new TableColumn<>("Created");
-        columnCreated.setCellValueFactory(new PropertyValueFactory<>("created"));
+        TableColumn<RouteLibrary, Date> columnCreated =
+            new TableColumn<>("Created");
+        columnCreated.setCellValueFactory(
+            new PropertyValueFactory<>("created"));
         table.getColumns().add(columnCreated);
 
-        TableColumn<RouteLibrary, Date> columnModified = new TableColumn<>("Modified");
-        columnModified.setCellValueFactory(new PropertyValueFactory<>("modified"));
+        TableColumn<RouteLibrary, Date> columnModified =
+            new TableColumn<>("Modified");
+        columnModified.setCellValueFactory(
+            new PropertyValueFactory<>("modified"));
         table.getColumns().add(columnModified);
 
-        TableColumn<RouteLibrary, Boolean> columnEnabled = new TableColumn<>("Enabled");
-        columnEnabled.setCellValueFactory(c -> new SimpleBooleanProperty(c.getValue().isEnabled()));
+        TableColumn<RouteLibrary, Boolean> columnEnabled =
+            new TableColumn<>("Enabled");
+        columnEnabled.setCellValueFactory(c ->
+            new SimpleBooleanProperty(c.getValue().isEnabled()));
         columnEnabled.setCellFactory(cell -> new CheckBoxTableCell<>());
         table.getColumns().add(columnEnabled);
 
-        table.setPlaceholder(new Label("No Libraries exist. Click on \"Add Library\" to get started."));
-        table.setItems(FXCollections.observableArrayList(new RouteLibraryDAO().findAll()));
+        table.setPlaceholder(new Label("No Libraries exist. Click on "
+            + "\"Add Library\" to get started."));
+        table.setItems(FXCollections.observableArrayList(
+            new RouteLibraryDAO().findAll()));
         FXUtils.autoResizeColumns(table);
 
         ContextMenu cm = new ContextMenu();
@@ -95,7 +113,8 @@ public class RouteLibraryWindow {
         miEdit.setOnAction(e -> new LibraryEditWindow().show());
         MenuItem miDelete = new MenuItem("Delete Library");
         miDelete.setOnAction(e -> new LibraryDeleteWindow().show());
-        cm.getItems().addAll(miEnableDisable, new SeparatorMenuItem(), miAdd, miEdit, miDelete);
+        cm.getItems().addAll(miEnableDisable,
+            new SeparatorMenuItem(), miAdd, miEdit, miDelete);
         table.setContextMenu(cm);
 
         table.setOnContextMenuRequested(e -> {
@@ -122,10 +141,12 @@ public class RouteLibraryWindow {
     }
 
     private static final TableView<RouteLibrary> table = getTableView();
-    private static final RouteLibraryController controller = new RouteLibraryController();
+    private static final RouteLibraryController controller =
+        new RouteLibraryController();
 
     public static void refreshTableView() {
-        table.setItems(FXCollections.observableArrayList(new RouteLibraryDAO().findAll()));
+        table.setItems(FXCollections.observableArrayList(
+            new RouteLibraryDAO().findAll()));
         FXUtils.autoResizeColumns(table);
     }
 
