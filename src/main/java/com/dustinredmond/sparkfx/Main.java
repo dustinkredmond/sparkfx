@@ -69,6 +69,12 @@ public final class Main {
             }
         } catch (Exception e) {
             System.err.println("Malformed arguments received. Please check the documentation.");
+            System.err.println("Valid arguments are as follows:");
+            System.err.println("\t--headless");
+            System.err.println("\t\tStarts the application without the GUI and"
+                + "initializes routes");
+            System.err.println("\t--port xxxx");
+            System.err.println("\t\tStarts the application on the specified port");
             System.exit(-1);
         }
     }

@@ -85,7 +85,8 @@ public final class AppRouteInitializer implements Runnable {
         output(startupSuccess.get(),
             startupFailure.get(),
             routesSuccess.get(),
-            routesFailure.get());
+            routesFailure.get()
+        );
         if (!ServerContext.isHeadless()) {
             RouteWindow.refreshTable();
         }
