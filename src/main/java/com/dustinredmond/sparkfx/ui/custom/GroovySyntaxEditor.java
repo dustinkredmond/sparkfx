@@ -80,7 +80,7 @@ public class GroovySyntaxEditor extends CodeArea {
             // Entire program is unusable if this exception
             // doesn't get caught....
             LOG.error("Unable to find groovy-keywords.css file, "
-                + "editors will not highlight syntax.");
+                + "editors will not support syntax highlighting.");
         }
         this.setOnKeyReleased(e -> {
             if (e.getCode().equals(KeyCode.F1)) {
