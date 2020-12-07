@@ -92,7 +92,14 @@ public final class AppRouteInitializer implements Runnable {
         }
     }
 
-
+    
+    /**
+     * Outputs results of initializing routes, taking into account
+     * whether or not application is running headlessly.
+     * @param startupSuccess Number of successfully mapped routes
+     * @param startupFailure Numbero f non-successfully mapped routes
+     *
+     */
     private void output(final int startupSuccess, final int startupFailure,
         final int routesSuccess, final int routesFailure) {
         LOG.info("Server Startup complete");
