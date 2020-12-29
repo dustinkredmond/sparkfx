@@ -37,7 +37,7 @@ public final class RouteDAO implements DAO<Route> {
 
         List<Route> routes = new ArrayList<>();
         final String sql = "SELECT ID, URL, CODE, CREATED, ENABLED"
-            + " FROM ROUTE E";
+            + " FROM ROUTE";
 
         try (Connection conn = new ConnectionFactory().connect();
             PreparedStatement ps = conn.prepareStatement(sql)) {
