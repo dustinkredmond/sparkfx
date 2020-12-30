@@ -7,6 +7,10 @@ API endpoints on your server while it's running, edit API logic, as well as remo
 All the above functionality can be done on the fly. No need to
 reboot after making a small code change.
 
+This is great for small microservices used within your company. It also provides one
+centralized interface for a multiple endpoints, so no need to maintain multiple separate
+web applications.
+
 ---
 
 ## Let's see some screenshots
@@ -51,7 +55,7 @@ We can get a previously defined RouteLibrary by the following:
     MyLibraryClass.someInstanceMethod()
     MyLibraryClass.someStaticMethod()
 
-    // It's best do do something like below where the name is lowercase if you're going
+    // It's best do do something like below where the name is lower camel-case if you're going
     // to primarily reference the instance instead of the static methods.
     def emp = getLibrary("Employee")
     emp.setSalary(new BigDecimal("45,000"))
@@ -83,8 +87,7 @@ of code (if they're enabled) will be run any time the server starts, before the 
 
 We can get there from the "Server" menu up top. This is also where we could start/stop the server if needed.
 
-We can enable/disable individual startup scripts, or even run them on demand. Below is a screenshot from the
-right-click menu of a Startup Script.
+We can enable/disable individual startup scripts, or even run them on demand.
 
 ---
 
@@ -93,6 +96,8 @@ right-click menu of a Startup Script.
 
 The program uses a single SQLite database to maintain this. By default, it's created in the same directory
 as the application, but this can be overridden via the Options menu.
+
+While the intended database is SQLite, SparkFX could easily be adapted to work with MySQL, MariaDB or similar..
 
 ---
 
