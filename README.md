@@ -125,7 +125,7 @@ Simply build with Apache Maven to build an executable JAR
   
 To build a Windows EXE file
   1. Install launch4j
-  2. Provide path to launch4j.exe in POM.xml
+  2. Provide path to launch4jc.exe in POM.xml
   3. In the exec plugin in POM.xml, change skip to false
   4. Run `mvn clean package`
   5. Find the SparkFX.exe in the `./target` directory
